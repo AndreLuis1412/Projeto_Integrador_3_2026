@@ -32,6 +32,28 @@
         private System.Windows.Forms.Label lblNomeGrupo;
         private System.Windows.Forms.ListBox lstExibeJogadores;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnCriarPartida;
+        private System.Windows.Forms.TextBox txtNomeCriarPartida;
+        private System.Windows.Forms.TextBox txtNomeGrupo;
+        private System.Windows.Forms.TextBox txtSenhaPartida;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnEntrarPartida;
+        private System.Windows.Forms.TextBox txtNomeJogador;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txtSenhaJogador;
+        private System.Windows.Forms.ListBox lstDinossauros;
+        private System.Windows.Forms.Button btnExibirDino;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtIdJogador;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button btnIniciarPartida;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtJogadorDaVez;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtFaceDado;
     }
 }
 
