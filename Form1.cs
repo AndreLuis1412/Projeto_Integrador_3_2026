@@ -36,11 +36,9 @@ namespace PI_3___2026
             this.label4 = new System.Windows.Forms.Label();
             this.btnCriarPartida = new System.Windows.Forms.Button();
             this.txtNomeCriarPartida = new System.Windows.Forms.TextBox();
-            this.txtNomeGrupo = new System.Windows.Forms.TextBox();
             this.txtSenhaPartida = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.btnEntrarPartida = new System.Windows.Forms.Button();
             this.txtNomeJogador = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -56,6 +54,14 @@ namespace PI_3___2026
             this.txtJogadorDaVez = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.txtFaceDado = new System.Windows.Forms.TextBox();
+            this.txtDinoJogar = new System.Windows.Forms.TextBox();
+            this.txtCercadoJogar = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.btnJogar = new System.Windows.Forms.Button();
+            this.txtTurno = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.btnVerificarPartida = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnListarPartidas
@@ -109,7 +115,7 @@ namespace PI_3___2026
             // 
             this.lblVersaoDLL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblVersaoDLL.AutoSize = true;
-            this.lblVersaoDLL.Location = new System.Drawing.Point(3, 561);
+            this.lblVersaoDLL.Location = new System.Drawing.Point(3, 635);
             this.lblVersaoDLL.Name = "lblVersaoDLL";
             this.lblVersaoDLL.Size = new System.Drawing.Size(0, 16);
             this.lblVersaoDLL.TabIndex = 6;
@@ -139,7 +145,7 @@ namespace PI_3___2026
             // 
             this.lblNomeGrupo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblNomeGrupo.AutoSize = true;
-            this.lblNomeGrupo.Location = new System.Drawing.Point(3, 545);
+            this.lblNomeGrupo.Location = new System.Drawing.Point(3, 619);
             this.lblNomeGrupo.Name = "lblNomeGrupo";
             this.lblNomeGrupo.Size = new System.Drawing.Size(0, 16);
             this.lblNomeGrupo.TabIndex = 10;
@@ -164,7 +170,7 @@ namespace PI_3___2026
             // 
             // btnCriarPartida
             // 
-            this.btnCriarPartida.Location = new System.Drawing.Point(524, 315);
+            this.btnCriarPartida.Location = new System.Drawing.Point(524, 273);
             this.btnCriarPartida.Name = "btnCriarPartida";
             this.btnCriarPartida.Size = new System.Drawing.Size(90, 23);
             this.btnCriarPartida.TabIndex = 13;
@@ -178,13 +184,6 @@ namespace PI_3___2026
             this.txtNomeCriarPartida.Name = "txtNomeCriarPartida";
             this.txtNomeCriarPartida.Size = new System.Drawing.Size(139, 22);
             this.txtNomeCriarPartida.TabIndex = 14;
-            // 
-            // txtNomeGrupo
-            // 
-            this.txtNomeGrupo.Location = new System.Drawing.Point(633, 269);
-            this.txtNomeGrupo.Name = "txtNomeGrupo";
-            this.txtNomeGrupo.Size = new System.Drawing.Size(139, 22);
-            this.txtNomeGrupo.TabIndex = 15;
             // 
             // txtSenhaPartida
             // 
@@ -210,15 +209,6 @@ namespace PI_3___2026
             this.label6.Size = new System.Drawing.Size(114, 16);
             this.label6.TabIndex = 18;
             this.label6.Text = "Senha da Partida:";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(521, 272);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(106, 16);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "Nome do Grupo:";
             // 
             // btnEntrarPartida
             // 
@@ -273,7 +263,7 @@ namespace PI_3___2026
             // 
             // btnExibirDino
             // 
-            this.btnExibirDino.Location = new System.Drawing.Point(263, 538);
+            this.btnExibirDino.Location = new System.Drawing.Point(19, 583);
             this.btnExibirDino.Name = "btnExibirDino";
             this.btnExibirDino.Size = new System.Drawing.Size(133, 23);
             this.btnExibirDino.TabIndex = 26;
@@ -308,7 +298,7 @@ namespace PI_3___2026
             // 
             // btnIniciarPartida
             // 
-            this.btnIniciarPartida.Location = new System.Drawing.Point(694, 315);
+            this.btnIniciarPartida.Location = new System.Drawing.Point(694, 273);
             this.btnIniciarPartida.Name = "btnIniciarPartida";
             this.btnIniciarPartida.Size = new System.Drawing.Size(98, 23);
             this.btnIniciarPartida.TabIndex = 30;
@@ -319,7 +309,7 @@ namespace PI_3___2026
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(595, 520);
+            this.label12.Location = new System.Drawing.Point(529, 440);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(52, 16);
             this.label12.TabIndex = 32;
@@ -327,7 +317,7 @@ namespace PI_3___2026
             // 
             // txtJogadorDaVez
             // 
-            this.txtJogadorDaVez.Location = new System.Drawing.Point(653, 514);
+            this.txtJogadorDaVez.Location = new System.Drawing.Point(587, 434);
             this.txtJogadorDaVez.Name = "txtJogadorDaVez";
             this.txtJogadorDaVez.Size = new System.Drawing.Size(139, 22);
             this.txtJogadorDaVez.TabIndex = 31;
@@ -335,7 +325,7 @@ namespace PI_3___2026
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(572, 542);
+            this.label13.Location = new System.Drawing.Point(506, 462);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(78, 16);
             this.label13.TabIndex = 34;
@@ -343,14 +333,90 @@ namespace PI_3___2026
             // 
             // txtFaceDado
             // 
-            this.txtFaceDado.Location = new System.Drawing.Point(653, 538);
+            this.txtFaceDado.Location = new System.Drawing.Point(587, 458);
             this.txtFaceDado.Name = "txtFaceDado";
-            this.txtFaceDado.Size = new System.Drawing.Size(139, 22);
+            this.txtFaceDado.Size = new System.Drawing.Size(58, 22);
             this.txtFaceDado.TabIndex = 33;
+            // 
+            // txtDinoJogar
+            // 
+            this.txtDinoJogar.Location = new System.Drawing.Point(361, 416);
+            this.txtDinoJogar.Name = "txtDinoJogar";
+            this.txtDinoJogar.Size = new System.Drawing.Size(69, 22);
+            this.txtDinoJogar.TabIndex = 35;
+            // 
+            // txtCercadoJogar
+            // 
+            this.txtCercadoJogar.Location = new System.Drawing.Point(361, 444);
+            this.txtCercadoJogar.Name = "txtCercadoJogar";
+            this.txtCercadoJogar.Size = new System.Drawing.Size(69, 22);
+            this.txtCercadoJogar.TabIndex = 36;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(280, 422);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(79, 16);
+            this.label7.TabIndex = 37;
+            this.label7.Text = "Dinossauro:";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(293, 448);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(62, 16);
+            this.label14.TabIndex = 38;
+            this.label14.Text = "Cercado:";
+            // 
+            // btnJogar
+            // 
+            this.btnJogar.Location = new System.Drawing.Point(283, 472);
+            this.btnJogar.Name = "btnJogar";
+            this.btnJogar.Size = new System.Drawing.Size(80, 26);
+            this.btnJogar.TabIndex = 39;
+            this.btnJogar.Text = "Jogar";
+            this.btnJogar.UseVisualStyleBackColor = true;
+            this.btnJogar.Click += new System.EventHandler(this.btnJogar_Click);
+            // 
+            // txtTurno
+            // 
+            this.txtTurno.Location = new System.Drawing.Point(587, 413);
+            this.txtTurno.Name = "txtTurno";
+            this.txtTurno.Size = new System.Drawing.Size(50, 22);
+            this.txtTurno.TabIndex = 41;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(538, 416);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(45, 16);
+            this.label15.TabIndex = 40;
+            this.label15.Text = "Turno:";
+            // 
+            // btnVerificarPartida
+            // 
+            this.btnVerificarPartida.Location = new System.Drawing.Point(587, 482);
+            this.btnVerificarPartida.Name = "btnVerificarPartida";
+            this.btnVerificarPartida.Size = new System.Drawing.Size(119, 23);
+            this.btnVerificarPartida.TabIndex = 43;
+            this.btnVerificarPartida.Text = "Verificar Partida";
+            this.btnVerificarPartida.UseVisualStyleBackColor = true;
+            this.btnVerificarPartida.Click += new System.EventHandler(this.btnVerificarPartida_Click);
             // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(912, 586);
+            this.ClientSize = new System.Drawing.Size(934, 660);
+            this.Controls.Add(this.btnVerificarPartida);
+            this.Controls.Add(this.txtTurno);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.btnJogar);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.txtCercadoJogar);
+            this.Controls.Add(this.txtDinoJogar);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.txtFaceDado);
             this.Controls.Add(this.label12);
@@ -366,11 +432,9 @@ namespace PI_3___2026
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtNomeJogador);
             this.Controls.Add(this.btnEntrarPartida);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtSenhaPartida);
-            this.Controls.Add(this.txtNomeGrupo);
             this.Controls.Add(this.txtNomeCriarPartida);
             this.Controls.Add(this.btnCriarPartida);
             this.Controls.Add(this.label4);
@@ -385,7 +449,7 @@ namespace PI_3___2026
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lstListaPartidas);
             this.Controls.Add(this.btnListarPartidas);
-            this.MinimumSize = new System.Drawing.Size(930, 550);
+            this.MinimumSize = new System.Drawing.Size(952, 707);
             this.Name = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -395,6 +459,23 @@ namespace PI_3___2026
         private void btnTeste_Click(object sender, EventArgs e)
         {
             
+        }
+
+        bool verificarJogada(string faceDado, string campoJogada)
+        {
+            if (faceDado == "AL" && (campoJogada == "" ||))
+                return true;
+            else if (faceDado == "FL" && (campoJogada == "" ||))
+                return true;
+            else if (faceDado == "PR" && (campoJogada == "" ||))
+                return true;
+            else if (faceDado == "TI" && (campoJogada == "" ||))
+                return true;
+            else if ((faceDado == "VZ" && (campoJogada == "" ||))
+                return true;
+            else if ((faceDado == "WC" && (campoJogada == "" ||))
+                return true;
+            return false;
         }
 
         public bool VerifyScreen()
@@ -465,10 +546,9 @@ namespace PI_3___2026
 
             string nomePartida = txtNomeCriarPartida.Text;
             string senhaPartida = txtSenhaPartida.Text;
-            string nomeGrupo = txtNomeGrupo.Text;
 
 
-            string retornoCriarPartida = Jogo.CriarPartida(nomePartida, senhaPartida, nomeGrupo);
+            string retornoCriarPartida = Jogo.CriarPartida(nomePartida, senhaPartida, "Fossilistas");
             if(retornoCriarPartida.Substring(0, 4) == "ERRO")
             {
                 MessageBox.Show("Ocorreu um erro:\n" + retornoCriarPartida.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -555,6 +635,41 @@ namespace PI_3___2026
                 txtJogadorDaVez.Text = jodagoDado[0];
                 txtFaceDado.Text = jodagoDado[1];
             }
+        }
+
+        private void btnJogar_Click(object sender, EventArgs e)
+        {
+            int idJogador = Convert.ToInt32(txtIdJogador.Text);
+            string senhaJogador = txtSenhaJogador.Text;
+            string dino = txtDinoJogar.Text;
+            string cercado = txtCercadoJogar.Text;
+
+            string retornoJogar = Jogo.Jogar(idJogador, senhaJogador, dino, cercado);
+            int retornoJoga = Convert.ToInt32(retornoJogar);
+        }
+
+        private void btnVerificarPartida_Click(object sender, EventArgs e)
+        {
+            int idPartida = Convert.ToInt32(txtIdPartida.Text);
+
+            string retornoVerPartida = Jogo.VerificarPartida(idPartida);
+
+            retornoVerPartida = retornoVerPartida.Replace("\r", "");
+            retornoVerPartida = retornoVerPartida.Substring(0, retornoVerPartida.Length - 1);
+
+            string[] verPartida = retornoVerPartida.Split(',');
+
+            string turno = verPartida[1];
+            string jogadorDaVez = verPartida[3];
+            string faceDado = verPartida[4];
+
+            txtTurno.Clear();
+            txtJogadorDaVez.Clear();
+            txtFaceDado.Clear();
+
+            txtTurno.Text = turno;
+            txtJogadorDaVez.Text = jogadorDaVez;
+            txtFaceDado.Text = faceDado;
         }
     }
 }

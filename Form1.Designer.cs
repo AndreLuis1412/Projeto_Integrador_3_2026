@@ -34,11 +34,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnCriarPartida;
         private System.Windows.Forms.TextBox txtNomeCriarPartida;
-        private System.Windows.Forms.TextBox txtNomeGrupo;
         private System.Windows.Forms.TextBox txtSenhaPartida;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnEntrarPartida;
         private System.Windows.Forms.TextBox txtNomeJogador;
         private System.Windows.Forms.Label label8;
@@ -54,6 +52,14 @@
         private System.Windows.Forms.TextBox txtJogadorDaVez;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtFaceDado;
+        private System.Windows.Forms.TextBox txtDinoJogar;
+        private System.Windows.Forms.TextBox txtCercadoJogar;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button btnJogar;
+        private System.Windows.Forms.TextBox txtTurno;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Button btnVerificarPartida;
     }
 }
 
