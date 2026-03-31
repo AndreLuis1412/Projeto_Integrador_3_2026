@@ -60,6 +60,7 @@
         private System.Windows.Forms.TextBox txtTurno;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnVerificarPartida;
+        private System.Windows.Forms.Button btnVerificarTurno;
     }
 }
 

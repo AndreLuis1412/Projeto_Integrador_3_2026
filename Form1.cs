@@ -62,6 +62,7 @@ namespace PI_3___2026
             this.txtTurno = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.btnVerificarPartida = new System.Windows.Forms.Button();
+            this.btnVerificarTurno = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnListarPartidas
@@ -398,7 +399,7 @@ namespace PI_3___2026
             // 
             // btnVerificarPartida
             // 
-            this.btnVerificarPartida.Location = new System.Drawing.Point(587, 482);
+            this.btnVerificarPartida.Location = new System.Drawing.Point(509, 486);
             this.btnVerificarPartida.Name = "btnVerificarPartida";
             this.btnVerificarPartida.Size = new System.Drawing.Size(119, 23);
             this.btnVerificarPartida.TabIndex = 43;
@@ -406,9 +407,20 @@ namespace PI_3___2026
             this.btnVerificarPartida.UseVisualStyleBackColor = true;
             this.btnVerificarPartida.Click += new System.EventHandler(this.btnVerificarPartida_Click);
             // 
+            // btnVerificarTurno
+            // 
+            this.btnVerificarTurno.Location = new System.Drawing.Point(634, 486);
+            this.btnVerificarTurno.Name = "btnVerificarTurno";
+            this.btnVerificarTurno.Size = new System.Drawing.Size(119, 23);
+            this.btnVerificarTurno.TabIndex = 44;
+            this.btnVerificarTurno.Text = "Verificar Turno";
+            this.btnVerificarTurno.UseVisualStyleBackColor = true;
+            this.btnVerificarTurno.Click += new System.EventHandler(this.btnVerificarTurno_Click);
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(934, 660);
+            this.Controls.Add(this.btnVerificarTurno);
             this.Controls.Add(this.btnVerificarPartida);
             this.Controls.Add(this.txtTurno);
             this.Controls.Add(this.label15);
@@ -549,7 +561,7 @@ namespace PI_3___2026
 
 
             string retornoCriarPartida = Jogo.CriarPartida(nomePartida, senhaPartida, "Fossilistas");
-            if(retornoCriarPartida.Substring(0, 1) == "ER")
+            if(retornoCriarPartida.Substring(0, 2) == "ER")
             {
                 MessageBox.Show("Ocorreu um erro:\n" + retornoCriarPartida.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -645,7 +657,14 @@ namespace PI_3___2026
             string cercado = txtCercadoJogar.Text;
 
             string retornoJogar = Jogo.Jogar(idJogador, senhaJogador, dino, cercado);
-            int retornoJoga = Convert.ToInt32(retornoJogar);
+            if(retornoJogar.Substring(0,2) == "ER")
+            {
+                MessageBox.Show("Ocorreu um erro:\n" + retornoJogar.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                int retornoJoga = Convert.ToInt32(retornoJogar);
+            }
         }
 
         private void btnVerificarPartida_Click(object sender, EventArgs e)
@@ -670,6 +689,31 @@ namespace PI_3___2026
             txtTurno.Text = turno;
             txtJogadorDaVez.Text = jogadorDaVez;
             txtFaceDado.Text = faceDado;
+        }
+
+        private void btnVerificarTurno_Click(object sender, EventArgs e)
+        {
+            int idPartida = Convert.ToInt32(txtIdPartida.Text);
+            string retorno = Jogo.VerificarTurno(idPartida);
+            if(retorno.Substring(0, 4) == "ERRO")
+            {
+                MessageBox.Show("Ocorreu um erro:\n" + retorno.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                retorno = retorno.Replace("\r", "");
+                string[] retornos = retorno.Split(',');
+
+                string jogadorDaVez = retornos[1];
+                string faceDado = retornos[2];
+                faceDado = faceDado.Substring(0, 2);
+                txtJogadorDaVez.Clear();
+                txtFaceDado.Clear();
+
+                txtJogadorDaVez.Text = jogadorDaVez;
+                txtFaceDado.Text = faceDado;
+
+            }
         }
     }
 }
