@@ -463,17 +463,17 @@ namespace PI_3___2026
 
         bool verificarJogada(string faceDado, string campoJogada)
         {
-            if (faceDado == "AL" && (campoJogada == "" ||))
+            //if (faceDado == "AL" && (campoJogada == "" ||))
                 return true;
-            else if (faceDado == "FL" && (campoJogada == "" ||))
+            //else if (faceDado == "FL" && (campoJogada == "" ||))
                 return true;
-            else if (faceDado == "PR" && (campoJogada == "" ||))
+            //else if (faceDado == "PR" && (campoJogada == "" ||))
                 return true;
-            else if (faceDado == "TI" && (campoJogada == "" ||))
+            //else if (faceDado == "TI" && (campoJogada == "" ||))
                 return true;
-            else if ((faceDado == "VZ" && (campoJogada == "" ||))
+            //else if ((faceDado == "VZ" && (campoJogada == "" ||))
                 return true;
-            else if ((faceDado == "WC" && (campoJogada == "" ||))
+            //else if ((faceDado == "WC" && (campoJogada == "" ||))
                 return true;
             return false;
         }
@@ -549,7 +549,7 @@ namespace PI_3___2026
 
 
             string retornoCriarPartida = Jogo.CriarPartida(nomePartida, senhaPartida, "Fossilistas");
-            if(retornoCriarPartida.Substring(0, 4) == "ERRO")
+            if(retornoCriarPartida.Substring(0, 1) == "ER")
             {
                 MessageBox.Show("Ocorreu um erro:\n" + retornoCriarPartida.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
