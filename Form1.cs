@@ -336,7 +336,7 @@ namespace PI_3___2026
             // 
             this.txtFaceDado.Location = new System.Drawing.Point(587, 458);
             this.txtFaceDado.Name = "txtFaceDado";
-            this.txtFaceDado.Size = new System.Drawing.Size(58, 22);
+            this.txtFaceDado.Size = new System.Drawing.Size(139, 22);
             this.txtFaceDado.TabIndex = 33;
             // 
             // txtDinoJogar
@@ -468,10 +468,15 @@ namespace PI_3___2026
 
         }
 
-        private void btnTeste_Click(object sender, EventArgs e)
-        {
-            
-        }
+        Dictionary<string, string> facesDadoDict = new Dictionary<string, string>()
+            {
+                { "AL", "Alimentação" },
+                { "FL", "Floresta" },
+                { "PR", "Pradaria" },
+                { "TI", "Tiranossauro Rex" },
+                { "VZ", "Cercado Vazio" },
+                { "WC", "Banheiros" }
+            };
 
         bool verificarJogada(string faceDado, string campoJogada)
         {
@@ -671,6 +676,28 @@ namespace PI_3___2026
         {
             int idPartida = Convert.ToInt32(txtIdPartida.Text);
 
+            string jogador = Jogo.ListarJogadores(idPartida);
+            jogador = jogador.Replace("\r", "");
+            jogador = jogador.Substring(0, jogador.Length - 1);
+
+            // Criando o dicionário
+            Dictionary<int, string> jogadoresDict = new Dictionary<int, string>();
+
+            // Separar por linha
+            string[] linhas = jogador.Split('\n');
+
+            foreach (string linha in linhas)
+            {
+                // Separar os campos
+                string[] partes = linha.Split(',');
+
+                int id = int.Parse(partes[0].Trim());
+                string nome = partes[1].Trim();
+
+                // Adicionar no dicionário
+                jogadoresDict[id] = nome;
+            }
+
             string retornoVerPartida = Jogo.VerificarPartida(idPartida);
 
             retornoVerPartida = retornoVerPartida.Replace("\r", "");
@@ -679,7 +706,7 @@ namespace PI_3___2026
             string[] verPartida = retornoVerPartida.Split(',');
 
             string turno = verPartida[1];
-            string jogadorDaVez = verPartida[3];
+            int jogadorDaVez = Convert.ToInt32(verPartida[3]);
             string faceDado = verPartida[4];
 
             txtTurno.Clear();
@@ -687,31 +714,53 @@ namespace PI_3___2026
             txtFaceDado.Clear();
 
             txtTurno.Text = turno;
-            txtJogadorDaVez.Text = jogadorDaVez;
-            txtFaceDado.Text = faceDado;
+            txtJogadorDaVez.Text = jogadoresDict[jogadorDaVez];
+            txtFaceDado.Text = facesDadoDict[faceDado];
         }
 
         private void btnVerificarTurno_Click(object sender, EventArgs e)
         {
             int idPartida = Convert.ToInt32(txtIdPartida.Text);
             string retorno = Jogo.VerificarTurno(idPartida);
-            if(retorno.Substring(0, 4) == "ERRO")
+            if (retorno.Substring(0, 4) == "ERRO")
             {
                 MessageBox.Show("Ocorreu um erro:\n" + retorno.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
+                string jogador = Jogo.ListarJogadores(idPartida);
+                jogador = jogador.Replace("\r", "");
+                jogador = jogador.Substring(0, jogador.Length - 1);
+
+                // Criando o dicionário
+                Dictionary<int, string> jogadoresDict = new Dictionary<int, string>();
+
+                // Separar por linha
+                string[] linhas = jogador.Split('\n');
+
+                foreach (string linha in linhas)
+                {
+                    // Separar os campos
+                    string[] partes = linha.Split(',');
+
+                    int id = int.Parse(partes[0].Trim());
+                    string nome = partes[1].Trim();
+
+                    // Adicionar no dicionário
+                    jogadoresDict[id] = nome;
+                }
+
                 retorno = retorno.Replace("\r", "");
                 string[] retornos = retorno.Split(',');
 
-                string jogadorDaVez = retornos[1];
+                int jogadorDaVez = Convert.ToInt32(retornos[1]);
                 string faceDado = retornos[2];
                 faceDado = faceDado.Substring(0, 2);
                 txtJogadorDaVez.Clear();
                 txtFaceDado.Clear();
 
-                txtJogadorDaVez.Text = jogadorDaVez;
-                txtFaceDado.Text = faceDado;
+                txtJogadorDaVez.Text = jogadoresDict[jogadorDaVez];
+                txtFaceDado.Text = facesDadoDict[faceDado];
 
             }
         }
