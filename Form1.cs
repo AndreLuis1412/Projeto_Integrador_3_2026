@@ -469,90 +469,40 @@ namespace PI_3___2026
         }
 
         Dictionary<string, string> facesDadoDict = new Dictionary<string, string>()
-            {
-                { "AL", "Alimentação" },
-                { "FL", "Floresta" },
-                { "PR", "Pradaria" },
-                { "TI", "Tiranossauro Rex" },
-                { "VZ", "Cercado Vazio" },
-                { "WC", "Banheiros" }
-            };
-
-        bool verificarJogada(string faceDado, string campoJogada)
         {
-            //if (faceDado == "AL" && (campoJogada == "" ||))
-                return true;
-            //else if (faceDado == "FL" && (campoJogada == "" ||))
-                return true;
-            //else if (faceDado == "PR" && (campoJogada == "" ||))
-                return true;
-            //else if (faceDado == "TI" && (campoJogada == "" ||))
-                return true;
-            //else if ((faceDado == "VZ" && (campoJogada == "" ||))
-                return true;
-            //else if ((faceDado == "WC" && (campoJogada == "" ||))
-                return true;
-            return false;
-        }
-
-        public bool VerifyScreen()
-        {
-            if (Jogo.versao == "2") //Adaptar para futuros erros
-            {
-                MessageBox.Show("Erro");
-                return false;
-            }
-
-            return true;
-        }
+            { "AL", "Alimentação" },
+            { "FL", "Floresta" },
+            { "PR", "Pradaria" },
+            { "TI", "Tiranossauro Rex" },
+            { "VZ", "Cercado Vazio" },
+            { "WC", "Banheiros" }
+        };
 
         private void btnListarPartidas_Click(object sender, EventArgs e)
         {
-            string retorno = Jogo.ListarPartidas("T");
-            retorno = retorno.Replace("\r", "");
-            retorno = retorno.Substring(0, retorno.Length - 1);
+            List<Partida> partidas = Partida.ListarPartidas();
 
-            string[] partidas = retorno.Split('\n');
             lstListaPartidas.Items.Clear();
-            for (int i = 0; i < partidas.Length; i++)
-            {
-                lstListaPartidas.Items.Add(partidas[i]);
-            }
+
+            foreach(Partida p in partidas)
+                lstListaPartidas.Items.Add(p);
         }
 
         private void lstListaPartidas_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Ao selecionar um item da lista, pegamos seus dados e passamos para variáveis
-            string partida = lstListaPartidas.SelectedItem.ToString();
-            string[] dadosPartida = partida.Split(',');
+            if (!(lstListaPartidas.SelectedItem is Partida partidaSelecionada))
+                return;
 
-            int idPartida = Convert.ToInt32(dadosPartida[0]);
-            string nomePartida = dadosPartida[1];
-            string dataPartida = dadosPartida[2];
+            txtIdPartida.Text = partidaSelecionada.Id.ToString();
+            txtNomePartida.Text = partidaSelecionada.Nome;
+            txtDataPartida.Text = partidaSelecionada.DataCriacao.ToString();
 
-            txtIdPartida.Text = idPartida.ToString();
-            txtNomePartida.Text = nomePartida;
-            txtDataPartida.Text = dataPartida;
+            List<Jogador> jogadores = partidaSelecionada.ListarJogadores();
 
-            //Exibimos tbm em outra lst, a lista de jogadores que estão na partida selecionada
-            string retornoJogadores = Jogo.ListarJogadores(idPartida);
-            //Tratando possiveis erros (usar de base para generalizar todos os erros)
-            if(retornoJogadores.Substring(0, 4) == "ERRO")
-            {
-                MessageBox.Show("Ocorreu um erro:\n" + retornoJogadores.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                retornoJogadores = retornoJogadores.Replace("\r", "");
-                retornoJogadores = retornoJogadores.Substring(0, retornoJogadores.Length - 1);
+            lstExibeJogadores.Items.Clear();
 
-                string[] jogadores = retornoJogadores.Split('\n');
-                lstExibeJogadores.Items.Clear();
-                for (int i = 0; i < jogadores.Length; i++)
-                {
-                    lstExibeJogadores.Items.Add(jogadores[i]);
-                }
-            }
+            foreach (Jogador j in jogadores)
+                lstExibeJogadores.Items.Add(j);
         }
 
         private void btnCriarPartida_Click(object sender, EventArgs e)
@@ -564,29 +514,20 @@ namespace PI_3___2026
             string nomePartida = txtNomeCriarPartida.Text;
             string senhaPartida = txtSenhaPartida.Text;
 
+            Partida p = Partida.CriarPartida(nomePartida, senhaPartida);
 
-            string retornoCriarPartida = Jogo.CriarPartida(nomePartida, senhaPartida, "Fossilistas");
-            if(retornoCriarPartida.Substring(0, 2) == "ER")
-            {
-                MessageBox.Show("Ocorreu um erro:\n" + retornoCriarPartida.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                txtIdPartida.Text = retornoCriarPartida;
-                int IdPartida = Convert.ToInt32(retornoCriarPartida);
+            txtIdPartida.Text = Convert.ToString(p.Id);
+            int IdPartida = p.Id;
 
-                string retorno = Jogo.ListarPartidas("T");
-                retorno = retorno.Replace("\r", "");
-                retorno = retorno.Substring(0, retorno.Length - 1);
+            List<Partida> partidas = Partida.ListarPartidas();
 
-                string[] partidas = retorno.Split('\n');
-                lstListaPartidas.Items.Clear();
-                for (int i = 0; i < partidas.Length; i++)
-                {
-                    lstListaPartidas.Items.Add(partidas[i]);
-                }
-            }
+            lstListaPartidas.Items.Clear();
+
+            foreach (Partida partida in partidas)
+                lstListaPartidas.Items.Add(partida);
         }
+
+        //Parei aqui
 
         private void btnEntrarPartida_Click(object sender, EventArgs e)
         {
