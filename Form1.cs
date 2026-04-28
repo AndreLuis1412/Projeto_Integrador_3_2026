@@ -467,7 +467,8 @@ namespace PI_3___2026
             this.PerformLayout();
 
         }
-
+        Partida partida = new Partida();
+        
         Dictionary<string, string> facesDadoDict = new Dictionary<string, string>()
             {
                 { "AL", "Alimentação" },
@@ -477,34 +478,7 @@ namespace PI_3___2026
                 { "VZ", "Cercado Vazio" },
                 { "WC", "Banheiros" }
             };
-
-        bool verificarJogada(string faceDado, string campoJogada)
-        {
-            //if (faceDado == "AL" && (campoJogada == "" ||))
-                return true;
-            //else if (faceDado == "FL" && (campoJogada == "" ||))
-                return true;
-            //else if (faceDado == "PR" && (campoJogada == "" ||))
-                return true;
-            //else if (faceDado == "TI" && (campoJogada == "" ||))
-                return true;
-            //else if ((faceDado == "VZ" && (campoJogada == "" ||))
-                return true;
-            //else if ((faceDado == "WC" && (campoJogada == "" ||))
-                return true;
-            return false;
-        }
-
-        public bool VerifyScreen()
-        {
-            if (Jogo.versao == "2") //Adaptar para futuros erros
-            {
-                MessageBox.Show("Erro");
-                return false;
-            }
-
-            return true;
-        }
+        
 
         private void btnListarPartidas_Click(object sender, EventArgs e)
         {
