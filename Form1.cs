@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Draft;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Draft;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace PI_3___2026
 {
@@ -22,6 +23,7 @@ namespace PI_3___2026
 
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnListarPartidas = new System.Windows.Forms.Button();
             this.lstListaPartidas = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -63,6 +65,8 @@ namespace PI_3___2026
             this.label15 = new System.Windows.Forms.Label();
             this.btnVerificarPartida = new System.Windows.Forms.Button();
             this.btnVerificarTurno = new System.Windows.Forms.Button();
+            this.tmrVerificarPartida = new System.Windows.Forms.Timer(this.components);
+            this.lblTestTimer = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnListarPartidas
@@ -417,9 +421,24 @@ namespace PI_3___2026
             this.btnVerificarTurno.UseVisualStyleBackColor = true;
             this.btnVerificarTurno.Click += new System.EventHandler(this.btnVerificarTurno_Click);
             // 
+            // tmrVerificarPartida
+            // 
+            this.tmrVerificarPartida.Interval = 5000;
+            this.tmrVerificarPartida.Tick += new System.EventHandler(this.tmrVerificarPartida_Tick);
+            // 
+            // lblTestTimer
+            // 
+            this.lblTestTimer.AutoSize = true;
+            this.lblTestTimer.Location = new System.Drawing.Point(532, 570);
+            this.lblTestTimer.Name = "lblTestTimer";
+            this.lblTestTimer.Size = new System.Drawing.Size(51, 16);
+            this.lblTestTimer.TabIndex = 45;
+            this.lblTestTimer.Text = "label16";
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(934, 660);
+            this.Controls.Add(this.lblTestTimer);
             this.Controls.Add(this.btnVerificarTurno);
             this.Controls.Add(this.btnVerificarPartida);
             this.Controls.Add(this.txtTurno);
@@ -467,6 +486,8 @@ namespace PI_3___2026
             this.PerformLayout();
 
         }
+        Partida p;
+        Jogador jogador;
 
         Dictionary<string, string> facesDadoDict = new Dictionary<string, string>()
         {
@@ -514,7 +535,7 @@ namespace PI_3___2026
             string nomePartida = txtNomeCriarPartida.Text;
             string senhaPartida = txtSenhaPartida.Text;
 
-            Partida p = Partida.CriarPartida(nomePartida, senhaPartida);
+            p = Partida.CriarPartida(nomePartida, senhaPartida);
 
             txtIdPartida.Text = Convert.ToString(p.Id);
             int IdPartida = p.Id;
@@ -537,41 +558,40 @@ namespace PI_3___2026
 
             string retornoEntrar = Jogo.Entrar(idPartidaEntrar, nomeJogador, senhaPartida);
 
-            if(retornoEntrar.Substring(0, 4) == "ERRO")
-            {
-                MessageBox.Show("Ocorreu um erro:\n" + retornoEntrar.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                retornoEntrar = retornoEntrar.Replace("\r", "");
-                string[] jogador = retornoEntrar.Split(',');
+            jogador = p.EntrarPartida(idPartidaEntrar, nomeJogador, senhaPartida);
 
-                txtIdJogador.Text = jogador[0];
-                txtSenhaJogador.Text = jogador[1];
-            }
+                txtIdJogador.Text = jogador.id.ToString();
+                txtSenhaJogador.Text = jogador.senha;
         }
 
         private void btnExibirDino_Click(object sender, EventArgs e)
         {
-            int idJogador = Convert.ToInt32(txtIdJogador.Text);
-            string senhaJogador = txtSenhaJogador.Text;
+            lblTestTimer.Text = DateTime.Now.ToString();
+            lstDinossauros.Items.Clear();
+            jogador.dinossauros.Clear();
 
-            string retornoDino = Jogo.ExibirMao(idJogador, senhaJogador);
+            string retornoDino = Jogo.ExibirMao();
+            retornoDino = retornoDino.Replace("\r", "").Trim();
 
-            if(retornoDino.Substring(0, 4) == "ERRO")
+            string[] dinos = retornoDino.Split('\n');
+
+            lstDinossauros.Items.Clear();
+            jogador.dinossauros.Clear();
+
+            for (int i = 0; i < dinos.Length; i++)
             {
-                MessageBox.Show("Ocorreu um erro:\n" + retornoDino.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                retornoDino = retornoDino.Replace("\r", "");
-                retornoDino = retornoDino.Substring(0, retornoDino.Length - 1);
+                if (string.IsNullOrWhiteSpace(dinos[i])) continue;
 
-                string[] dinos = retornoDino.Split('\n');
-                lstDinossauros.Items.Clear();
-                for (int i = 0; i < dinos.Length; i++)
+                string[] partes = dinos[i].Split(',');
+
+                string dino = partes[0];
+                int quantidade = Convert.ToInt32(partes[1]);
+
+                lstDinossauros.Items.Add($"{dino} x{quantidade}");
+
+                for (int j = 0; j < quantidade; j++)
                 {
-                    lstDinossauros.Items.Add(dinos[i]);
+                    jogador.dinossauros.Add(dino);
                 }
             }
         }
@@ -592,6 +612,8 @@ namespace PI_3___2026
                 string[] jodagoDado = retornoIniciar.Split(',');
                 txtJogadorDaVez.Text = jodagoDado[0];
                 txtFaceDado.Text = jodagoDado[1];
+                btnExibirDino_Click(sender, e);
+                tmrVerificarPartida.Enabled = true;
             }
         }
 
@@ -704,6 +726,86 @@ namespace PI_3___2026
                 txtFaceDado.Text = facesDadoDict[faceDado];
 
             }
+        }
+
+
+        public void isEmpty()
+        {
+            //Fazer função para verificar se campo esta vazio, dict <string,list>
+            //Count da list, se == 0, retornar key
+            //IFs
+        }
+
+        public void isRex()
+        {
+            //Fazer função para verificar se campo esta com t-Rex, dict <string,list>
+            //Se não tem retorna key
+            //IFs
+        }
+        private void tmrVerificarPartida_Tick(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            tmrVerificarPartida.Enabled = false;
+            btnVerificarPartida_Click(sender, e);
+            if(txtJogadorDaVez.Text == jogador.id.ToString())
+            {
+                if(txtFaceDado.Text == "Alimentação")
+                {
+                    int index = rand.Next(jogador.dinossauros.Count);
+                    string dinoEscolhido = jogador.dinossauros[index];
+
+                    jogador.dinossauros.RemoveAt(index);
+
+                    jogador.Jogar(dinoEscolhido, "FI");
+                }
+                else if(txtFaceDado.Text == "Floresta")
+                {
+                    int index = rand.Next(jogador.dinossauros.Count);
+                    string dinoEscolhido = jogador.dinossauros[index];
+
+                    jogador.dinossauros.RemoveAt(index);
+
+                    jogador.Jogar(dinoEscolhido, "FI");
+                }
+                else if(txtFaceDado.Text == "Pradaria")
+                {
+                    int index = rand.Next(jogador.dinossauros.Count);
+                    string dinoEscolhido = jogador.dinossauros[index];
+
+                    jogador.dinossauros.RemoveAt(index);
+
+                    jogador.Jogar(dinoEscolhido, "CD");
+                }
+                else if(txtFaceDado.Text == "Tiranossauro Rex")
+                {
+                    int index = rand.Next(jogador.dinossauros.Count);
+                    string dinoEscolhido = jogador.dinossauros[index];
+
+                    jogador.dinossauros.RemoveAt(index);
+
+                    jogador.Jogar(dinoEscolhido, "RI");
+                }
+                else if( txtFaceDado.Text == "Cercado Vazio")
+                {
+                    int index = rand.Next(jogador.dinossauros.Count);
+                    string dinoEscolhido = jogador.dinossauros[index];
+
+                    jogador.dinossauros.RemoveAt(index);
+
+                    jogador.Jogar(dinoEscolhido, "MT");
+                }
+                else if(txtFaceDado.Text == "Banheiros")
+                {
+                    int index = rand.Next(jogador.dinossauros.Count);
+                    string dinoEscolhido = jogador.dinossauros[index];
+
+                    jogador.dinossauros.RemoveAt(index);
+
+                    jogador.Jogar(dinoEscolhido, "CD");
+                }
+            }
+            btnExibirDino_Click(sender, e);
+            tmrVerificarPartida.Enabled = true;
         }
     }
 }

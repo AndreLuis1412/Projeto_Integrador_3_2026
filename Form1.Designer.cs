@@ -61,6 +61,8 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnVerificarPartida;
         private System.Windows.Forms.Button btnVerificarTurno;
+        private System.Windows.Forms.Timer tmrVerificarPartida;
+        private System.Windows.Forms.Label lblTestTimer;
     }
 }
 

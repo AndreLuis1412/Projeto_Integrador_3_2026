@@ -18,16 +18,22 @@ namespace PI_3___2026
         public DateTime DataCriacao { get; set; }
 
         public List<Jogador> jogadores { get; set; }
+
+        static Verificador verificador;
+
+        Jogador jogador;
+
+
         public override string ToString()
         {
             return $"{Id},{Nome},{DataCriacao},{Status}";
         }
 
-        public static List<Partida> ListarPartidas()
+        public static List<Partida> ListarPartidas(string status="T")
         {
             List<Partida> partidasObj = new List<Partida>();
 
-            string retorno = Jogo.ListarPartidas("T");
+            string retorno = Jogo.ListarPartidas(status);
             retorno = retorno.Replace("\r", "");
             retorno = retorno.Substring(0, retorno.Length - 1);
 
@@ -51,14 +57,12 @@ namespace PI_3___2026
 
         public List<Jogador> ListarJogadores()
         {
-            jogadores = new List<Jogador>(); 
+            jogadores = new List<Jogador>();
+            verificador = new Verificador();
             string retornoJogadores = Jogo.ListarJogadores(this.Id);
+            bool erro = verificador.VerificarErro(retornoJogadores);
 
-            if (retornoJogadores.Substring(0, 4) == "ERRO" || retornoJogadores == "")
-            {
-                MessageBox.Show("Ocorreu um erro:\n" + retornoJogadores.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
+            if (!erro)
             {
                 retornoJogadores = retornoJogadores.Replace("\r", "");
                 retornoJogadores = retornoJogadores.Substring(0, retornoJogadores.Length - 1);
@@ -83,11 +87,10 @@ namespace PI_3___2026
         public static Partida CriarPartida(string nomePartida, string senhaPartida)
         {
             string retornoCriarPartida = Jogo.CriarPartida(nomePartida, senhaPartida, "Fossilistas");
-            if (retornoCriarPartida.Substring(0, 2) == "ER")
-            {
-                MessageBox.Show("Ocorreu um erro:\n" + retornoCriarPartida.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
+            verificador = new Verificador();
+            bool erro = verificador.VerificarErro(retornoCriarPartida);
+
+            if (!erro)
             {
                 Partida p = new Partida();
                 p.Nome = nomePartida;
@@ -97,5 +100,47 @@ namespace PI_3___2026
             }
             return null;
         }
+
+        public string[] VerificarPartida()
+        {
+            int idPartida = Convert.ToInt32(this.Id);
+            string retorno = Jogo.VerificarPartida(idPartida);
+            verificador = new Verificador();
+
+            if (!verificador.VerificarErro(retorno))
+            {
+                retorno = retorno.Replace("\r", "");
+                retorno = retorno.Substring(0, retorno.Length - 1);
+
+                string[] listReturn = retorno.Split(',');
+                return listReturn;
+            }
+            return null;
+        }
+        
+        public Jogador EntrarPartida(int idPartida, string nomeJogador, string senhaPartida)
+        {
+            verificador = new Verificador();
+            int idPartidaEntrar = Convert.ToInt32(idPartida);
+
+            string retorno = Jogo.Entrar(idPartidaEntrar, nomeJogador, senhaPartida);
+            bool erro = verificador.VerificarErro(retorno);
+            if (!erro)
+            {
+                retorno = retorno.Replace("\r", "");
+                string[] jogado = retorno.Split(',');
+
+                int idJogador = Convert.ToInt32(jogado[0]);
+
+                jogador = new Jogador(idJogador, nomeJogador, jogado[1]);
+
+                return jogador;
+
+            }
+
+            return null;
+        }
+        
+
     }
 }

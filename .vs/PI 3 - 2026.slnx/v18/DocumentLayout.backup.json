@@ -1,26 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\",
+  "WorkspaceRootPath": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|c:\\users\\edyjo\\documents\\pi 3\\projeto_integrador_3_2026\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|c:\\users\\edyjo\\documents\\pi 3\\projeto_integrador_3_2026\\partida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|solutionrelative:partida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|c:\\users\\edyjo\\documents\\pi 3\\projeto_integrador_3_2026\\jogador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|solutionrelative:jogador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|c:\\users\\edyjo\\documents\\pi 3\\projeto_integrador_3_2026\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|c:\\users\\edyjo\\documents\\pi 3\\projeto_integrador_3_2026\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\jogador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|solutionrelative:jogador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|c:\\users\\oandr\\bcc\\pi 3 - 2026\\projeto_integrador_3_2026\\partida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|solutionrelative:partida.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|c:\\users\\oandr\\bcc\\pi 3 - 2026\\projeto_integrador_3_2026\\verificador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBE1DB44-E459-441C-A97E-BA0E3F9E1220}|PI 3 - 2026.csproj|solutionrelative:verificador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -32,6 +32,19 @@
           "DockedWidth": 200,
           "SelectedChildIndex": 5,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Partida.cs",
+              "DocumentMoniker": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\Partida.cs",
+              "RelativeDocumentMoniker": "Partida.cs",
+              "ToolTip": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\Partida.cs",
+              "RelativeToolTip": "Partida.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAwwI8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-05T15:33:44.606Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
@@ -48,65 +61,52 @@
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Jogador.cs",
-              "DocumentMoniker": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\Jogador.cs",
+              "DocumentMoniker": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\Jogador.cs",
               "RelativeDocumentMoniker": "Jogador.cs",
-              "ToolTip": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\Jogador.cs",
+              "ToolTip": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\Jogador.cs",
               "RelativeToolTip": "Jogador.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAA3wA8AAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-05T17:21:23.441Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Partida.cs",
-              "DocumentMoniker": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\Partida.cs",
-              "RelativeDocumentMoniker": "Partida.cs",
-              "ToolTip": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\Partida.cs",
-              "RelativeToolTip": "Partida.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAADwv1sAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-05T15:33:44.606Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\Form1.cs",
+              "DocumentMoniker": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\Form1.cs",
+              "ToolTip": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAPkBAAAAAAAAAAAUwAYCAAA3AAAAAAAAAA==",
+              "ViewState": "AgIAACgCAAAAAAAAAAAswDwCAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-03T21:59:09.3Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
+              "Title": "Verificador.cs",
+              "DocumentMoniker": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\Verificador.cs",
+              "RelativeDocumentMoniker": "Verificador.cs",
+              "ToolTip": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\Verificador.cs",
+              "RelativeToolTip": "Verificador.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwDQAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-03T19:48:46.695Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Form1.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\Form1.cs",
+              "DocumentMoniker": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\Form1.cs [Design]",
+              "ToolTip": "C:\\Users\\oandr\\BCC\\PI 3 - 2026\\Projeto_Integrador_3_2026\\Form1.cs [Design]",
               "RelativeToolTip": "Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-03T21:58:53.313Z",
               "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\edyjo\\Documents\\PI 3\\Projeto_Integrador_3_2026\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T21:58:27.928Z",
-              "EditorCaption": ""
             }
           ]
         }
