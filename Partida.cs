@@ -11,13 +11,16 @@ namespace PI_3___2026
 {
     internal class Partida
     {
+
         public string Nome { get; set; }
         public string Senha { get; set; }
         public int Id { get; set; }
         public char Status { get; set; }
-        public DateTime DataCriacao { get; set; }
+        public string DataCriacao { get; set; }
 
         public List<Jogador> jogadores { get; set; }
+
+        public Dictionary<string, List<string>> tabuleiro = new Dictionary<string, List<string>>();
 
         static Verificador verificador;
 
@@ -27,6 +30,42 @@ namespace PI_3___2026
         public override string ToString()
         {
             return $"{Id},{Nome},{DataCriacao},{Status}";
+        }
+
+        public Partida() 
+        {
+            this.tabuleiro.Add("CD", new List<string>());
+            this.tabuleiro.Add("FI", new List<string>());
+            this.tabuleiro.Add("IS", new List<string>());
+            this.tabuleiro.Add("MT", new List<string>());
+            this.tabuleiro.Add("PA", new List<string>());
+            this.tabuleiro.Add("RI", new List<string>());
+            this.tabuleiro.Add("RS", new List<string>());
+        }
+
+        public Partida(int id)
+        {
+            this.Id = id ;
+            this.tabuleiro.Add("CD", new List<string>());
+            this.tabuleiro.Add("FI", new List<string>());
+            this.tabuleiro.Add("IS", new List<string>());
+            this.tabuleiro.Add("MT", new List<string>());
+            this.tabuleiro.Add("PA", new List<string>());
+            this.tabuleiro.Add("RI", new List<string>());
+            this.tabuleiro.Add("RS", new List<string>());
+        }
+
+        public Partida(int id, string senha)
+        {
+            this.Id = id;
+            this.Senha = senha;
+            this.tabuleiro.Add("CD", new List<string>());
+            this.tabuleiro.Add("FI", new List<string>());
+            this.tabuleiro.Add("IS", new List<string>());
+            this.tabuleiro.Add("MT", new List<string>());
+            this.tabuleiro.Add("PA", new List<string>());
+            this.tabuleiro.Add("RI", new List<string>());
+            this.tabuleiro.Add("RS", new List<string>());
         }
 
         public static List<Partida> ListarPartidas(string status="T")
@@ -46,7 +85,7 @@ namespace PI_3___2026
 
                 p.Id = Convert.ToInt32(dados[0]);
                 p.Nome = dados[1];
-                p.DataCriacao = Convert.ToDateTime(dados[2]);
+                p.DataCriacao = (dados[2]);
                 p.Status = Convert.ToChar(dados[3]);
 
                 partidasObj.Add(p);
@@ -92,7 +131,9 @@ namespace PI_3___2026
 
             if (!erro)
             {
+
                 Partida p = new Partida();
+                p.Id = Convert.ToInt32(retornoCriarPartida);
                 p.Nome = nomePartida;
                 p.Senha = senhaPartida;
 
