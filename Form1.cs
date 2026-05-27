@@ -67,6 +67,8 @@ namespace PI_3___2026
             this.btnVerificarTurno = new System.Windows.Forms.Button();
             this.tmrVerificarPartida = new System.Windows.Forms.Timer(this.components);
             this.lblTestTimer = new System.Windows.Forms.Label();
+            this.lblDinoEscolhido = new System.Windows.Forms.Label();
+            this.lblCampoEscolhido = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnListarPartidas
@@ -429,15 +431,35 @@ namespace PI_3___2026
             // lblTestTimer
             // 
             this.lblTestTimer.AutoSize = true;
-            this.lblTestTimer.Location = new System.Drawing.Point(511, 583);
+            this.lblTestTimer.Location = new System.Drawing.Point(449, 554);
             this.lblTestTimer.Name = "lblTestTimer";
             this.lblTestTimer.Size = new System.Drawing.Size(54, 16);
             this.lblTestTimer.TabIndex = 45;
             this.lblTestTimer.Text = "Tempo:";
             // 
+            // lblDinoEscolhido
+            // 
+            this.lblDinoEscolhido.AutoSize = true;
+            this.lblDinoEscolhido.Location = new System.Drawing.Point(402, 583);
+            this.lblDinoEscolhido.Name = "lblDinoEscolhido";
+            this.lblDinoEscolhido.Size = new System.Drawing.Size(101, 16);
+            this.lblDinoEscolhido.TabIndex = 46;
+            this.lblDinoEscolhido.Text = "Dino Escolhido:";
+            // 
+            // lblCampoEscolhido
+            // 
+            this.lblCampoEscolhido.AutoSize = true;
+            this.lblCampoEscolhido.Location = new System.Drawing.Point(386, 612);
+            this.lblCampoEscolhido.Name = "lblCampoEscolhido";
+            this.lblCampoEscolhido.Size = new System.Drawing.Size(117, 16);
+            this.lblCampoEscolhido.TabIndex = 47;
+            this.lblCampoEscolhido.Text = "Campo Escolhido:";
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(934, 660);
+            this.Controls.Add(this.lblCampoEscolhido);
+            this.Controls.Add(this.lblDinoEscolhido);
             this.Controls.Add(this.lblTestTimer);
             this.Controls.Add(this.btnVerificarTurno);
             this.Controls.Add(this.btnVerificarPartida);
@@ -761,13 +783,13 @@ namespace PI_3___2026
             //IFs
             if (!p.tabuleiro["CD"].Contains("Ti"))
                 return "CD";
-            else if (p.tabuleiro["FI"].Contains("Ti"))
+            else if (!p.tabuleiro["FI"].Contains("Ti"))
                 return "FI";
-            else if (p.tabuleiro["IS"].Contains("Ti"))
+            else if (!p.tabuleiro["IS"].Contains("Ti"))
                 return "IS";
-            else if (p.tabuleiro["MT"].Contains("Ti"))
+            else if (!p.tabuleiro["MT"].Contains("Ti"))
                 return "MT";
-            else if (p.tabuleiro["PA"].Contains("Ti"))
+            else if (!p.tabuleiro["PA"].Contains("Ti"))
                 return "PA";
             else if (!p.tabuleiro["RS"].Contains("Ti"))
                 return "RS";
@@ -799,6 +821,7 @@ namespace PI_3___2026
                     jogador.dinossauros.RemoveAt(index);
 
                     jogador.Jogar(dinoEscolhido, "FI");
+                    p.tabuleiro["FI"].Add(dinoEscolhido);
                     jogar = false;
                 }
                 else if(txtFaceDado.Text == "Floresta")
@@ -809,6 +832,7 @@ namespace PI_3___2026
                     jogador.dinossauros.RemoveAt(index);
 
                     jogador.Jogar(dinoEscolhido, "FI");
+                    p.tabuleiro["FI"].Add(dinoEscolhido);
                     jogar = false;
                 }
                 else if(txtFaceDado.Text == "Pradaria")
@@ -819,6 +843,7 @@ namespace PI_3___2026
                     jogador.dinossauros.RemoveAt(index);
 
                     jogador.Jogar(dinoEscolhido, "CD");
+                    p.tabuleiro["CD"].Add(dinoEscolhido);
                     jogar = false;
                 }
                 else if(txtFaceDado.Text == "Tiranossauro Rex")
@@ -827,8 +852,10 @@ namespace PI_3___2026
                     string dinoEscolhido = jogador.dinossauros[index];
 
                     jogador.dinossauros.RemoveAt(index);
+                    string semRex = isRex();
 
-                    jogador.Jogar(dinoEscolhido, isRex());
+                    jogador.Jogar(dinoEscolhido, semRex);
+                    p.tabuleiro[semRex].Add(dinoEscolhido);
                     jogar = false;
                 }
                 else if( txtFaceDado.Text == "Cercado Vazio")
@@ -837,8 +864,10 @@ namespace PI_3___2026
                     string dinoEscolhido = jogador.dinossauros[index];
 
                     jogador.dinossauros.RemoveAt(index);
+                    string semDino = isEmpty();
 
-                    jogador.Jogar(dinoEscolhido, isEmpty());
+                    jogador.Jogar(dinoEscolhido, semDino);
+                    p.tabuleiro[semDino].Add(dinoEscolhido);
                     jogar = false;
                 }
                 else if(txtFaceDado.Text == "Banheiros")
@@ -849,6 +878,7 @@ namespace PI_3___2026
                     jogador.dinossauros.RemoveAt(index);
 
                     jogador.Jogar(dinoEscolhido, "CD");
+                    p.tabuleiro["CD"].Add(dinoEscolhido);
                     jogar = false;
                 }
             }

@@ -63,6 +63,8 @@
         private System.Windows.Forms.Button btnVerificarTurno;
         private System.Windows.Forms.Timer tmrVerificarPartida;
         private System.Windows.Forms.Label lblTestTimer;
+        private System.Windows.Forms.Label lblDinoEscolhido;
+        private System.Windows.Forms.Label lblCampoEscolhido;
     }
 }
 
