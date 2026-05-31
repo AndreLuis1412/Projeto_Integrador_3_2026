@@ -440,7 +440,7 @@ namespace PI_3___2026
             // lblDinoEscolhido
             // 
             this.lblDinoEscolhido.AutoSize = true;
-            this.lblDinoEscolhido.Location = new System.Drawing.Point(402, 583);
+            this.lblDinoEscolhido.Location = new System.Drawing.Point(402, 586);
             this.lblDinoEscolhido.Name = "lblDinoEscolhido";
             this.lblDinoEscolhido.Size = new System.Drawing.Size(101, 16);
             this.lblDinoEscolhido.TabIndex = 46;
@@ -449,7 +449,7 @@ namespace PI_3___2026
             // lblCampoEscolhido
             // 
             this.lblCampoEscolhido.AutoSize = true;
-            this.lblCampoEscolhido.Location = new System.Drawing.Point(386, 612);
+            this.lblCampoEscolhido.Location = new System.Drawing.Point(386, 619);
             this.lblCampoEscolhido.Name = "lblCampoEscolhido";
             this.lblCampoEscolhido.Size = new System.Drawing.Size(117, 16);
             this.lblCampoEscolhido.TabIndex = 47;
@@ -531,6 +531,8 @@ namespace PI_3___2026
                 lstListaPartidas.Items.Add(p);
         }
 
+
+        //precisa salvar a instancia da partida qnd clicada, para atribuir
         private void lstListaPartidas_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!(lstListaPartidas.SelectedItem is Partida partidaSelecionada))
@@ -541,6 +543,7 @@ namespace PI_3___2026
             txtDataPartida.Text = partidaSelecionada.DataCriacao.ToString();
 
             List<Jogador> jogadores = partidaSelecionada.ListarJogadores();
+            p = partidaSelecionada;
 
             lstExibeJogadores.Items.Clear();
 
@@ -586,7 +589,6 @@ namespace PI_3___2026
 
         private void btnExibirDino_Click(object sender, EventArgs e)
         {
-            lblTestTimer.Text = DateTime.Now.ToString();
             lstDinossauros.Items.Clear();
             if (jogador.dinossauros.Count > 0)
                 jogador.dinossauros.Clear();
@@ -800,12 +802,13 @@ namespace PI_3___2026
         private void tmrVerificarPartida_Tick(object sender, EventArgs e)
         {
             bool jogar = false;
+            lblTestTimer.Text = "Tempo:" + DateTime.Now.ToString();
             string anterior = "0";
             Random rand = new Random();
             tmrVerificarPartida.Enabled = false;
             btnVerificarPartida_Click(sender, e);
 
-            if(anterior != txtTurno.Text)
+            if(anterior == txtTurno.Text)
             {
                 jogar = true;
                 anterior = txtTurno.Text;
@@ -884,8 +887,6 @@ namespace PI_3___2026
             }
             btnExibirDino_Click(sender, e);
             tmrVerificarPartida.Enabled = true;
-            lblTestTimer.Text = "";
-            lblTestTimer.Text = DateTime.Now.ToString();
         }
     }
 }
