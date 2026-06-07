@@ -65,6 +65,7 @@
         private System.Windows.Forms.Label lblTestTimer;
         private System.Windows.Forms.Label lblDinoEscolhido;
         private System.Windows.Forms.Label lblCampoEscolhido;
+        private System.Windows.Forms.Button btnIniciarAgente;
     }
 }
 

@@ -11,7 +11,6 @@ namespace PI_3___2026
 {
     internal class Partida
     {
-
         public string Nome { get; set; }
         public string Senha { get; set; }
         public int Id { get; set; }
@@ -22,73 +21,83 @@ namespace PI_3___2026
 
         public Dictionary<string, List<string>> tabuleiro = new Dictionary<string, List<string>>();
 
-        static Verificador verificador;
+        private static Verificador verificador = new Verificador();
 
-        Jogador jogador;
-
+        private Jogador jogador;
 
         public override string ToString()
         {
             return $"{Id},{Nome},{DataCriacao},{Status}";
         }
 
-        public Partida() 
+        public Partida()
         {
-            this.tabuleiro.Add("CD", new List<string>());
-            this.tabuleiro.Add("FI", new List<string>());
-            this.tabuleiro.Add("IS", new List<string>());
-            this.tabuleiro.Add("MT", new List<string>());
-            this.tabuleiro.Add("PA", new List<string>());
-            this.tabuleiro.Add("RI", new List<string>());
-            this.tabuleiro.Add("RS", new List<string>());
+            InicializarTabuleiro();
         }
 
         public Partida(int id)
         {
-            this.Id = id ;
-            this.tabuleiro.Add("CD", new List<string>());
-            this.tabuleiro.Add("FI", new List<string>());
-            this.tabuleiro.Add("IS", new List<string>());
-            this.tabuleiro.Add("MT", new List<string>());
-            this.tabuleiro.Add("PA", new List<string>());
-            this.tabuleiro.Add("RI", new List<string>());
-            this.tabuleiro.Add("RS", new List<string>());
+            this.Id = id;
+            InicializarTabuleiro();
         }
 
         public Partida(int id, string senha)
         {
             this.Id = id;
             this.Senha = senha;
-            this.tabuleiro.Add("CD", new List<string>());
-            this.tabuleiro.Add("FI", new List<string>());
-            this.tabuleiro.Add("IS", new List<string>());
-            this.tabuleiro.Add("MT", new List<string>());
-            this.tabuleiro.Add("PA", new List<string>());
-            this.tabuleiro.Add("RI", new List<string>());
-            this.tabuleiro.Add("RS", new List<string>());
+            InicializarTabuleiro();
         }
 
-        public static List<Partida> ListarPartidas(string status="T")
+        private void InicializarTabuleiro()
+        {
+            tabuleiro = new Dictionary<string, List<string>>
+            {
+                { "CD", new List<string>() },
+                { "FI", new List<string>() },
+                { "IS", new List<string>() },
+                { "MT", new List<string>() },
+                { "PA", new List<string>() },
+                { "RI", new List<string>() },
+                { "RS", new List<string>() }
+            };
+        }
+
+        public static List<Partida> ListarPartidas(string status = "T")
         {
             List<Partida> partidasObj = new List<Partida>();
 
             string retorno = Jogo.ListarPartidas(status);
-            retorno = retorno.Replace("\r", "");
-            retorno = retorno.Substring(0, retorno.Length - 1);
 
-            string[] partidas = retorno.Split('\n');
+            if (verificador.VerificarErroSilencioso(retorno))
+                return partidasObj;
 
-            for (int i = 0; i < partidas.Length; i++)
+            try
             {
-                Partida p = new Partida();
-                string[] dados = partidas[i].Split(',');
+                retorno = retorno.Replace("\r", "").TrimEnd('\n');
 
-                p.Id = Convert.ToInt32(dados[0]);
-                p.Nome = dados[1];
-                p.DataCriacao = (dados[2]);
-                p.Status = Convert.ToChar(dados[3]);
+                string[] partidas = retorno.Split('\n');
 
-                partidasObj.Add(p);
+                foreach (string linha in partidas)
+                {
+                    if (string.IsNullOrWhiteSpace(linha)) continue;
+
+                    string[] dados = linha.Split(',');
+                    if (dados.Length < 4) continue;
+
+                    Partida p = new Partida
+                    {
+                        Id = Convert.ToInt32(dados[0]),
+                        Nome = dados[1],
+                        DataCriacao = dados[2],
+                        Status = Convert.ToChar(dados[3])
+                    };
+
+                    partidasObj.Add(p);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao listar partidas:\n" + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return partidasObj;
@@ -97,91 +106,104 @@ namespace PI_3___2026
         public List<Jogador> ListarJogadores()
         {
             jogadores = new List<Jogador>();
-            verificador = new Verificador();
             string retornoJogadores = Jogo.ListarJogadores(this.Id);
-            bool erro = verificador.VerificarErro(retornoJogadores);
 
-            if (!erro)
+            if (verificador.VerificarErro(retornoJogadores))
+                return jogadores;
+
+            try
             {
-                retornoJogadores = retornoJogadores.Replace("\r", "");
-                retornoJogadores = retornoJogadores.Substring(0, retornoJogadores.Length - 1);
+                retornoJogadores = retornoJogadores.Replace("\r", "").TrimEnd('\n');
 
                 string[] jogadoresStr = retornoJogadores.Split('\n');
 
-
-                for (int i = 0; i < jogadoresStr.Length; i++)
+                foreach (string linha in jogadoresStr)
                 {
-                    Jogador j = new Jogador();
-                    string[] dados = jogadoresStr[i].Split(',');
+                    if (string.IsNullOrWhiteSpace(linha)) continue;
 
-                    j.Id = Convert.ToInt32(dados[0]);
-                    j.Nome = dados[1];
-                    j.Pontuacao = Convert.ToInt32(dados[2]);
+                    string[] dados = linha.Split(',');
+                    if (dados.Length < 3) continue;
+
+                    Jogador j = new Jogador
+                    {
+                        Id = Convert.ToInt32(dados[0]),
+                        Nome = dados[1],
+                        Pontuacao = Convert.ToInt32(dados[2])
+                    };
+
                     jogadores.Add(j);
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao listar jogadores:\n" + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
             return jogadores;
         }
 
         public static Partida CriarPartida(string nomePartida, string senhaPartida)
         {
-            string retornoCriarPartida = Jogo.CriarPartida(nomePartida, senhaPartida, "Fossilistas");
-            verificador = new Verificador();
-            bool erro = verificador.VerificarErro(retornoCriarPartida);
+            string retorno = Jogo.CriarPartida(nomePartida, senhaPartida, "Fossilistas");
 
-            if (!erro)
+            if (verificador.VerificarErro(retorno))
+                return null;
+
+            try
             {
-
-                Partida p = new Partida();
-                p.Id = Convert.ToInt32(retornoCriarPartida);
-                p.Nome = nomePartida;
-                p.Senha = senhaPartida;
-
+                Partida p = new Partida
+                {
+                    Id = Convert.ToInt32(retorno.Trim()),
+                    Nome = nomePartida,
+                    Senha = senhaPartida
+                };
                 return p;
             }
-            return null;
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao criar partida:\n" + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
 
         public string[] VerificarPartida()
         {
-            int idPartida = Convert.ToInt32(this.Id);
-            string retorno = Jogo.VerificarPartida(idPartida);
-            verificador = new Verificador();
+            string retorno = Jogo.VerificarPartida(this.Id);
 
-            if (!verificador.VerificarErro(retorno))
+            if (verificador.VerificarErroSilencioso(retorno))
+                return null;
+
+            try
             {
-                retorno = retorno.Replace("\r", "");
-                retorno = retorno.Substring(0, retorno.Length - 1);
-
-                string[] listReturn = retorno.Split(',');
-                return listReturn;
+                retorno = retorno.Replace("\r", "").TrimEnd('\n');
+                return retorno.Split(',');
             }
-            return null;
+            catch
+            {
+                return null;
+            }
         }
-        
+
         public Jogador EntrarPartida(int idPartida, string nomeJogador, string senhaPartida)
         {
-            verificador = new Verificador();
-            int idPartidaEntrar = Convert.ToInt32(idPartida);
+            string retorno = Jogo.Entrar(idPartida, nomeJogador, senhaPartida);
 
-            string retorno = Jogo.Entrar(idPartidaEntrar, nomeJogador, senhaPartida);
-            bool erro = verificador.VerificarErro(retorno);
-            if (!erro)
+            if (verificador.VerificarErro(retorno))
+                return null;
+
+            try
             {
                 retorno = retorno.Replace("\r", "");
-                string[] jogado = retorno.Split(',');
+                string[] dados = retorno.Split(',');
 
-                int idJogador = Convert.ToInt32(jogado[0]);
-
-                jogador = new Jogador(idJogador, nomeJogador, jogado[1]);
-
+                jogador = new Jogador(Convert.ToInt32(dados[0]), nomeJogador, dados[1]);
                 return jogador;
-
             }
-
-            return null;
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao entrar na partida:\n" + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
-        
-
     }
 }

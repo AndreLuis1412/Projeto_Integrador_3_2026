@@ -14,11 +14,535 @@ namespace PI_3___2026
 {
     public partial class Form1 : Form
     {
+        Partida p = new Partida();
+        Jogador jogador;
+
+        private string turnoAnterior = "-1";
+
+        Dictionary<string, string> facesDadoDict = new Dictionary<string, string>()
+        {
+            { "AL", "Alimentação" },
+            { "FL", "Floresta" },
+            { "PR", "Pradaria" },
+            { "TI", "Tiranossauro Rex" },
+            { "VZ", "Cercado Vazio" },
+            { "WC", "Banheiros" }
+        };
+
         public Form1()
         {
             InitializeComponent();
             lblVersaoDLL.Text = "Versão: " + Jogo.versao;
             lblNomeGrupo.Text = "Nome do Grupo: Fossilistas";
+        }
+
+        private void btnListarPartidas_Click(object sender, EventArgs e)
+        {
+            List<Partida> partidas = Partida.ListarPartidas();
+            lstListaPartidas.Items.Clear();
+            foreach (Partida partida in partidas)
+                lstListaPartidas.Items.Add(partida);
+        }
+
+        private void lstListaPartidas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!(lstListaPartidas.SelectedItem is Partida partidaSelecionada))
+                return;
+
+            txtIdPartida.Text = partidaSelecionada.Id.ToString();
+            txtNomePartida.Text = partidaSelecionada.Nome;
+            txtDataPartida.Text = partidaSelecionada.DataCriacao;
+
+            p = partidaSelecionada;
+
+            List<Jogador> jogadores = partidaSelecionada.ListarJogadores();
+            lstExibeJogadores.Items.Clear();
+            foreach (Jogador j in jogadores)
+                lstExibeJogadores.Items.Add(j);
+        }
+
+        private void btnCriarPartida_Click(object sender, EventArgs e)
+        {
+            string nomePartida = txtNomeCriarPartida.Text;
+            string senhaPartida = txtSenhaPartida.Text;
+
+            Partida novaPartida = Partida.CriarPartida(nomePartida, senhaPartida);
+            if (novaPartida == null) return;
+
+            p = novaPartida;
+            txtIdPartida.Text = p.Id.ToString();
+            txtNomePartida.Text = p.Nome;
+            txtDataPartida.Clear();
+
+            List<Partida> partidas = Partida.ListarPartidas();
+            lstListaPartidas.Items.Clear();
+            foreach (Partida partida in partidas)
+                lstListaPartidas.Items.Add(partida);
+        }
+
+        private void btnEntrarPartida_Click(object sender, EventArgs e)
+        {
+            if (!int.TryParse(txtIdPartida.Text, out int idPartidaEntrar))
+            {
+                MessageBox.Show("ID da partida inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string nomeJogador = txtNomeJogador.Text;
+            string senhaPartida = txtSenhaPartida.Text;
+
+            jogador = p.EntrarPartida(idPartidaEntrar, nomeJogador, senhaPartida);
+            if (jogador == null) return;
+
+            txtIdJogador.Text = jogador.Id.ToString();
+            txtSenhaJogador.Text = jogador.Senha;
+        }
+
+        private void btnExibirDino_Click(object sender, EventArgs e)
+        {
+            if (jogador == null) return;
+
+            if (!int.TryParse(txtIdJogador.Text, out int idJogador)) return;
+            string senhaJogador = txtSenhaJogador.Text;
+
+            string retornoDino = Jogo.ExibirMao(idJogador, senhaJogador);
+
+            if (string.IsNullOrEmpty(retornoDino) || retornoDino.StartsWith("ER"))
+                return;
+
+            retornoDino = retornoDino.Replace("\r", "").Trim();
+
+            if (retornoDino.Length > 1)
+                retornoDino = retornoDino.Substring(1);
+
+            string[] dinos = retornoDino.Split('\n');
+
+            lstDinossauros.Items.Clear();
+            jogador.dinossauros.Clear();
+
+            foreach (string linha in dinos)
+            {
+                if (string.IsNullOrWhiteSpace(linha)) continue;
+
+                string[] partes = linha.Split(',');
+                if (partes.Length < 2) continue;
+
+                string codDino = partes[0].Trim();
+                if (!int.TryParse(partes[1].Trim(), out int quantidade)) continue;
+
+                lstDinossauros.Items.Add($"{codDino} x{quantidade}");
+
+                for (int j = 0; j < quantidade; j++)
+                    jogador.dinossauros.Add(codDino);
+            }
+        }
+
+        private void btnIniciarPartida_Click(object sender, EventArgs e)
+        {
+            if (jogador == null) return;
+
+            if (!int.TryParse(txtIdJogador.Text, out int idJogador)) return;
+            string senhaJogador = txtSenhaJogador.Text;
+
+            string retornoIniciar = Jogo.Iniciar(idJogador, senhaJogador);
+
+            if (string.IsNullOrEmpty(retornoIniciar) || retornoIniciar.StartsWith("ER"))
+            {
+                string msg = retornoIniciar?.Length > 5 ? retornoIniciar.Substring(5) : retornoIniciar;
+                MessageBox.Show("Ocorreu um erro:\n" + msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string[] dadosIniciar = retornoIniciar.Split(',');
+            if (dadosIniciar.Length >= 2)
+            {
+                txtJogadorDaVez.Text = dadosIniciar[0];
+                txtFaceDado.Text = dadosIniciar.Length > 1 ? dadosIniciar[1] : "";
+            }
+        }
+
+        private void btnJogar_Click(object sender, EventArgs e)
+        {
+            if (jogador == null) return;
+
+            if (!int.TryParse(txtIdJogador.Text, out int idJogador)) return;
+            string senhaJogador = txtSenhaJogador.Text;
+            string dino = txtDinoJogar.Text;
+            string cercado = txtCercadoJogar.Text;
+
+            string retornoJogar = Jogo.Jogar(idJogador, senhaJogador, dino, cercado);
+
+            if (string.IsNullOrEmpty(retornoJogar) || retornoJogar.StartsWith("ER"))
+            {
+                string msg = retornoJogar?.Length > 5 ? retornoJogar.Substring(5) : retornoJogar;
+                MessageBox.Show("Ocorreu um erro:\n" + msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnVerificarPartida_Click(object sender, EventArgs e)
+        {
+            if (!int.TryParse(txtIdPartida.Text, out int idPartida)) return;
+
+            Dictionary<int, string> jogadoresDict = ObterDicionarioJogadores(idPartida);
+            if (jogadoresDict == null) return;
+
+            string retorno = Jogo.VerificarPartida(idPartida);
+            if (string.IsNullOrEmpty(retorno) || retorno.StartsWith("ER")) return;
+
+            try
+            {
+                retorno = retorno.Replace("\r", "").TrimEnd('\n');
+                string[] dados = retorno.Split(',');
+
+                if (dados.Length < 5) return;
+
+                string turno = dados[1];
+                int idJogadorDaVez = Convert.ToInt32(dados[3]);
+                string codFace = dados[4].Length >= 2 ? dados[4].Substring(0, 2) : dados[4];
+
+                txtTurno.Text = turno;
+                txtJogadorDaVez.Text = jogadoresDict.ContainsKey(idJogadorDaVez)
+                    ? jogadoresDict[idJogadorDaVez]
+                    : idJogadorDaVez.ToString();
+                txtFaceDado.Text = facesDadoDict.ContainsKey(codFace)
+                    ? facesDadoDict[codFace]
+                    : codFace;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao verificar partida:\n" + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnVerificarTurno_Click(object sender, EventArgs e)
+        {
+            if (!int.TryParse(txtIdPartida.Text, out int idPartida)) return;
+
+            string retorno = Jogo.VerificarTurno(idPartida);
+
+            if (string.IsNullOrEmpty(retorno) || retorno.StartsWith("ER"))
+            {
+                string msg = retorno?.Length > 5 ? retorno.Substring(5) : retorno;
+                MessageBox.Show("Ocorreu um erro:\n" + msg, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Dictionary<int, string> jogadoresDict = ObterDicionarioJogadores(idPartida);
+            if (jogadoresDict == null) return;
+
+            try
+            {
+                retorno = retorno.Replace("\r", "").TrimEnd('\n');
+                string[] dados = retorno.Split(',');
+
+                if (dados.Length < 3) return;
+
+                int idJogadorDaVez = Convert.ToInt32(dados[1]);
+                string codFace = dados[2].Length >= 2 ? dados[2].Substring(0, 2) : dados[2];
+
+                txtJogadorDaVez.Text = jogadoresDict.ContainsKey(idJogadorDaVez)
+                    ? jogadoresDict[idJogadorDaVez]
+                    : idJogadorDaVez.ToString();
+                txtFaceDado.Text = facesDadoDict.ContainsKey(codFace)
+                    ? facesDadoDict[codFace]
+                    : codFace;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao verificar turno:\n" + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnIniciarAgente_Click(object sender, EventArgs e)
+        {
+            btnExibirDino_Click(sender, e);
+            btnVerificarPartida_Click(sender, e);
+            tmrVerificarPartida.Enabled = true;
+        }
+
+        private Dictionary<int, string> ObterDicionarioJogadores(int idPartida)
+        {
+            string retorno = Jogo.ListarJogadores(idPartida);
+
+            if (string.IsNullOrEmpty(retorno) || retorno.StartsWith("ER"))
+                return null;
+
+            var dict = new Dictionary<int, string>();
+
+            try
+            {
+                retorno = retorno.Replace("\r", "").TrimEnd('\n');
+                string[] linhas = retorno.Split('\n');
+
+                foreach (string linha in linhas)
+                {
+                    if (string.IsNullOrWhiteSpace(linha)) continue;
+                    string[] partes = linha.Split(',');
+                    if (partes.Length < 2) continue;
+
+                    if (int.TryParse(partes[0].Trim(), out int id))
+                        dict[id] = partes[1].Trim();
+                }
+            }
+            catch { return null; }
+
+            return dict;
+        }
+
+        private void tmrVerificarPartida_Tick(object sender, EventArgs e)
+        {
+            tmrVerificarPartida.Enabled = false;
+            lblTestTimer.Text = "Tempo: " + DateTime.Now.ToString("HH:mm:ss");
+
+            btnVerificarPartida_Click(sender, e);
+
+            string turnoAtual = txtTurno.Text;
+
+            if (turnoAtual == "13" || DinosNoTabuleiro() >= 12)
+            {
+                lblTestTimer.Text = "Jogo encerrado!";
+                return; 
+            }
+
+            if (string.IsNullOrWhiteSpace(turnoAtual) || turnoAtual == turnoAnterior)
+            {
+                tmrVerificarPartida.Enabled = true;
+                return;
+            }
+
+            turnoAnterior = turnoAtual;
+
+            if (jogador != null)
+            {
+                btnExibirDino_Click(sender, e);
+
+                if (jogador.dinossauros.Count > 0)
+                {
+                    ExecutarEstrategia();
+                    btnExibirDino_Click(sender, e);
+                }
+            }
+
+            tmrVerificarPartida.Enabled = true;
+        }
+
+        private int DinosNoTabuleiro()
+            => p.tabuleiro.Values.Sum(lista => lista.Count);
+
+        private void ExecutarEstrategia()
+        {
+            if (jogador == null || jogador.dinossauros.Count == 0) return;
+
+            string faceDado = txtFaceDado.Text;
+            string dino = null;
+            string cercado = null;
+
+            switch (faceDado)
+            {
+                case "Floresta":
+                case "Alimentação":
+                    (dino, cercado) = EstrategiaRestricaoFloresta();
+                    break;
+                case "Pradaria":
+                    (dino, cercado) = EstrategiaRestricaoPradaria();
+                    break;
+                case "Banheiros":
+                    (dino, cercado) = EstrategiaRestricaoBanheiros();
+                    break;
+                case "Cercado Vazio":
+                    (dino, cercado) = EstrategiaRestricaoCercadoVazio();
+                    break;
+                case "Tiranossauro Rex":
+                    (dino, cercado) = EstrategiaRestricaoSemRex();
+                    break;
+                default:
+                    (dino, cercado) = MelhorJogadaGeral();
+                    break;
+            }
+
+            if (dino == null || cercado == null)
+                (dino, cercado) = JogadaSegura();
+
+            if (dino != null && cercado != null)
+            {
+                lblDinoEscolhido.Text = "Dino Escolhido: " + dino;
+                lblCampoEscolhido.Text = "Campo Escolhido: " + cercado;
+
+                bool sucesso = jogador.Jogar(dino, cercado);
+                if (sucesso)
+                {
+                    if (p.tabuleiro.ContainsKey(cercado))
+                        p.tabuleiro[cercado].Add(dino);
+                    jogador.dinossauros.Remove(dino);
+                }
+                else
+                {
+                    MessageBox.Show($"Falha ao jogar {dino} em {cercado}.", "Estratégia",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        private (string dino, string cercado) EstrategiaRestricaoFloresta()
+            => EscolherMelhorJogadaEntre(new List<string> { "FI", "MT", "RS", "RI"});
+
+        private (string dino, string cercado) EstrategiaRestricaoPradaria()
+            => EscolherMelhorJogadaEntre(new List<string> { "PA", "CD", "IS", "RI"});
+
+        private (string dino, string cercado) EstrategiaRestricaoBanheiros()
+            => EscolherMelhorJogadaEntre(new List<string> { "IS", "CD", "RS", "RI"});
+
+        private (string dino, string cercado) EstrategiaRestricaoCercadoVazio()
+        {
+            var vazios = p.tabuleiro
+                .Where(kvp => kvp.Value.Count == 0)
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            return vazios.Count > 0
+                ? EscolherMelhorJogadaEntre(vazios)
+                : JogadaSegura();
+        }
+
+        private (string dino, string cercado) EstrategiaRestricaoSemRex()
+        {
+            var semRex = p.tabuleiro
+                .Where(kvp => !kvp.Value.Contains("Ti"))
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            return semRex.Count > 0
+                ? EscolherMelhorJogadaEntre(semRex)
+                : JogadaSegura();
+        }
+
+        private (string dino, string cercado) EscolherMelhorJogadaEntre(List<string> cercadosPermitidos)
+        {
+            string melhorDino = null;
+            string melhorCercado = null;
+            int melhorGanho = -999;
+
+            foreach (string codCercado in cercadosPermitidos)
+            {
+                if (!p.tabuleiro.ContainsKey(codCercado)) continue;
+
+                foreach (string codDino in jogador.dinossauros.Distinct())
+                {
+                    int ganho = AvaliarGanho(codDino, codCercado);
+                    if (ganho > melhorGanho)
+                    {
+                        melhorGanho = ganho;
+                        melhorDino = codDino;
+                        melhorCercado = codCercado;
+                    }
+                }
+            }
+
+            return (melhorDino, melhorCercado);
+        }
+
+        private int AvaliarGanho(string codDino, string codCercado)
+        {
+            var cercado = p.tabuleiro[codCercado];
+            int qtdAtual = cercado.Count;
+
+            switch (codCercado)
+            {
+                case "FI":
+                    {
+                        if (qtdAtual > 0 && cercado[0] != codDino) return -999; 
+                        if (qtdAtual >= 6) return -999; 
+
+                        int[] tabela = { 0, 2, 4, 8, 12, 18, 24 };
+                        int ganho = tabela[qtdAtual + 1] - tabela[qtdAtual];
+                        if (codDino == "Ti") ganho += 1; 
+                        return ganho;
+                    }
+
+                case "CD": 
+                    {
+                        if (cercado.Contains(codDino)) return -999; 
+                        if (qtdAtual >= 6) return -999; 
+
+                        int[] tabela = { 0, 1, 3, 6, 10, 15, 21 };
+                        int ganho = tabela[qtdAtual + 1] - tabela[qtdAtual];
+                        if (codDino == "Ti") ganho += 1;
+                        return ganho;
+                    }
+
+                case "PA":
+                    {
+                        int mesmosNoPA = cercado.Count(d => d == codDino);
+                        int ganho = (mesmosNoPA % 2 == 1) ? 5 : 1;
+                        if (codDino == "Ti") ganho += 1;
+                        return ganho;
+                    }
+
+                case "MT":
+                    {
+                        if (qtdAtual >= 3) return -999; 
+
+                        int ganho = (qtdAtual == 2) ? 7 : 2; 
+                        if (codDino == "Ti") ganho += 1;
+                        return ganho;
+                    }
+
+                case "RS":
+                    {
+                        if (qtdAtual >= 1) return -999; 
+
+                        int totalNoZoo = ContarDinoNoZoo(codDino) + 1;
+                        int ganho = totalNoZoo * 2; 
+                        if (codDino == "Ti") ganho += 1;
+                        return ganho;
+                    }
+
+                case "IS":
+                    {
+                        if (qtdAtual >= 1) return -999; 
+
+                        bool unicoNoZoo = ContarDinoNoZoo(codDino) == 0;
+                        if (unicoNoZoo)
+                        {
+                            int ganho = 7;
+                            if (codDino == "Ti") ganho += 1;
+                            return ganho;
+                        }
+                        return -5;
+                    }
+
+                case "RI":
+                    {
+                        int ganho = 1;
+                        if (codDino == "Ti") ganho += 1;
+                        return ganho;
+                    }
+
+                default:
+                    return 0;
+            }
+        }
+
+        private (string dino, string cercado) MelhorJogadaGeral()
+            => EscolherMelhorJogadaEntre(p.tabuleiro.Keys.ToList());
+
+        private (string dino, string cercado) JogadaSegura()
+        {
+            if (jogador.dinossauros.Count == 0) return (null, null);
+            string dino = EscolherDinoMenosValioso();
+            return (dino, "RI");
+        }
+
+        private int ContarDinoNoZoo(string codDino)
+            => p.tabuleiro.Values.Sum(lista => lista.Count(d => d == codDino));
+
+        private string EscolherDinoMenosValioso()
+        {
+            if (jogador.dinossauros.Count == 0) return null;
+            return jogador.dinossauros
+                .GroupBy(d => d)
+                .OrderBy(g => g.Count())
+                .First().Key;
         }
 
         private void InitializeComponent()
@@ -69,6 +593,7 @@ namespace PI_3___2026
             this.lblTestTimer = new System.Windows.Forms.Label();
             this.lblDinoEscolhido = new System.Windows.Forms.Label();
             this.lblCampoEscolhido = new System.Windows.Forms.Label();
+            this.btnIniciarAgente = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnListarPartidas
@@ -455,9 +980,20 @@ namespace PI_3___2026
             this.lblCampoEscolhido.TabIndex = 47;
             this.lblCampoEscolhido.Text = "Campo Escolhido:";
             // 
+            // btnIniciarAgente
+            // 
+            this.btnIniciarAgente.Location = new System.Drawing.Point(283, 519);
+            this.btnIniciarAgente.Name = "btnIniciarAgente";
+            this.btnIniciarAgente.Size = new System.Drawing.Size(104, 26);
+            this.btnIniciarAgente.TabIndex = 48;
+            this.btnIniciarAgente.Text = "Iniciar Agente";
+            this.btnIniciarAgente.UseVisualStyleBackColor = true;
+            this.btnIniciarAgente.Click += new System.EventHandler(this.btnIniciarAgente_Click);
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(934, 660);
+            this.Controls.Add(this.btnIniciarAgente);
             this.Controls.Add(this.lblCampoEscolhido);
             this.Controls.Add(this.lblDinoEscolhido);
             this.Controls.Add(this.lblTestTimer);
@@ -507,386 +1043,6 @@ namespace PI_3___2026
             this.ResumeLayout(false);
             this.PerformLayout();
 
-        }
-        Partida p = new Partida();
-        Jogador jogador;
-
-        Dictionary<string, string> facesDadoDict = new Dictionary<string, string>()
-        {
-            { "AL", "Alimentação" },
-            { "FL", "Floresta" },
-            { "PR", "Pradaria" },
-            { "TI", "Tiranossauro Rex" },
-            { "VZ", "Cercado Vazio" },
-            { "WC", "Banheiros" }
-        };
-
-        private void btnListarPartidas_Click(object sender, EventArgs e)
-        {
-            List<Partida> partidas = Partida.ListarPartidas();
-
-            lstListaPartidas.Items.Clear();
-
-            foreach(Partida p in partidas)
-                lstListaPartidas.Items.Add(p);
-        }
-
-
-        //precisa salvar a instancia da partida qnd clicada, para atribuir
-        private void lstListaPartidas_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!(lstListaPartidas.SelectedItem is Partida partidaSelecionada))
-                return;
-
-            txtIdPartida.Text = partidaSelecionada.Id.ToString();
-            txtNomePartida.Text = partidaSelecionada.Nome;
-            txtDataPartida.Text = partidaSelecionada.DataCriacao.ToString();
-
-            List<Jogador> jogadores = partidaSelecionada.ListarJogadores();
-            p = partidaSelecionada;
-
-            lstExibeJogadores.Items.Clear();
-
-            foreach (Jogador j in jogadores)
-                lstExibeJogadores.Items.Add(j);
-        }
-
-        private void btnCriarPartida_Click(object sender, EventArgs e)
-        {
-            txtIdPartida.Clear();
-            txtNomePartida.Clear();
-            txtDataPartida.Clear();
-
-            string nomePartida = txtNomeCriarPartida.Text;
-            string senhaPartida = txtSenhaPartida.Text;
-
-            p = Partida.CriarPartida(nomePartida, senhaPartida);
-
-            txtIdPartida.Text = Convert.ToString(p.Id);
-            int IdPartida = p.Id;
-
-            List<Partida> partidas = Partida.ListarPartidas();
-
-            lstListaPartidas.Items.Clear();
-
-            foreach (Partida partida in partidas)
-                lstListaPartidas.Items.Add(partida);
-        }
-
-        //Parei aqui
-
-        private void btnEntrarPartida_Click(object sender, EventArgs e)
-        {
-            int idPartidaEntrar = Convert.ToInt32(txtIdPartida.Text);
-            string nomeJogador = txtNomeJogador.Text;
-            string senhaPartida = txtSenhaPartida.Text;
-
-            jogador = p.EntrarPartida(idPartidaEntrar, nomeJogador, senhaPartida);
-
-                txtIdJogador.Text = jogador.Id.ToString();
-                txtSenhaJogador.Text = jogador.Senha;
-        }
-
-        private void btnExibirDino_Click(object sender, EventArgs e)
-        {
-            lstDinossauros.Items.Clear();
-            if (jogador.dinossauros.Count > 0)
-                jogador.dinossauros.Clear();
-
-            int idJogador = Convert.ToInt32(txtIdJogador.Text);
-            string senhaJogador = txtSenhaJogador.Text;
-
-            string retornoDino = Jogo.ExibirMao(idJogador, senhaJogador);
-            retornoDino = retornoDino.Replace("\r", "").Trim();
-            retornoDino = retornoDino.Substring(1);
-
-            string[] dinos = retornoDino.Split('\n');
-
-            lstDinossauros.Items.Clear();
-            jogador.dinossauros.Clear();
-
-            for (int i = 0; i < dinos.Length; i++)
-            {
-                if (string.IsNullOrWhiteSpace(dinos[i])) continue;
-
-                string[] partes = dinos[i].Split(',');
-
-                string dino = partes[0];
-                int quantidade = Convert.ToInt32(partes[1]);
-
-                lstDinossauros.Items.Add($"{dino} x{quantidade}");
-
-                for (int j = 0; j < quantidade; j++)
-                {
-                    jogador.dinossauros.Add(dino);
-                }
-            }
-        }
-
-        private void btnIniciarPartida_Click(object sender, EventArgs e)
-        {
-            int idJogador = Convert.ToInt32(txtIdJogador.Text);
-            string senhaJogador = txtSenhaJogador.Text;
-
-            string retornoIniciar = Jogo.Iniciar(idJogador, senhaJogador);
-
-            if(retornoIniciar.Substring(0, 4) == "ERRO")
-            {
-                MessageBox.Show("Ocorreu um erro:\n" + retornoIniciar.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                string[] jodagoDado = retornoIniciar.Split(',');
-                txtJogadorDaVez.Text = jodagoDado[0];
-                txtFaceDado.Text = jodagoDado[1];
-                btnExibirDino_Click(sender, e);
-                btnVerificarPartida_Click(sender, e);
-                tmrVerificarPartida.Enabled = true;
-            }
-        }
-
-        private void btnJogar_Click(object sender, EventArgs e)
-        {
-            int idJogador = Convert.ToInt32(txtIdJogador.Text);
-            string senhaJogador = txtSenhaJogador.Text;
-            string dino = txtDinoJogar.Text;
-            string cercado = txtCercadoJogar.Text;
-
-            string retornoJogar = Jogo.Jogar(idJogador, senhaJogador, dino, cercado);
-            if(retornoJogar.Substring(0,2) == "ER")
-            {
-                MessageBox.Show("Ocorreu um erro:\n" + retornoJogar.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                int retornoJoga = Convert.ToInt32(retornoJogar);
-            }
-        }
-
-        private void btnVerificarPartida_Click(object sender, EventArgs e)
-        {
-            int idPartida = Convert.ToInt32(txtIdPartida.Text);
-
-            string jogador = Jogo.ListarJogadores(idPartida);
-            jogador = jogador.Replace("\r", "");
-            jogador = jogador.Substring(0, jogador.Length - 1);
-
-            // Criando o dicionário
-            Dictionary<int, string> jogadoresDict = new Dictionary<int, string>();
-
-            // Separar por linha
-            string[] linhas = jogador.Split('\n');
-
-            foreach (string linha in linhas)
-            {
-                // Separar os campos
-                string[] partes = linha.Split(',');
-
-                int id = int.Parse(partes[0].Trim());
-                string nome = partes[1].Trim();
-
-                // Adicionar no dicionário
-                jogadoresDict[id] = nome;
-            }
-
-            string retornoVerPartida = Jogo.VerificarPartida(idPartida);
-
-            retornoVerPartida = retornoVerPartida.Replace("\r", "");
-            retornoVerPartida = retornoVerPartida.Substring(0, retornoVerPartida.Length - 1);
-
-            string[] verPartida = retornoVerPartida.Split(',');
-
-            string turno = verPartida[1];
-            int jogadorDaVez = Convert.ToInt32(verPartida[3]);
-            string faceDado = verPartida[4];
-
-            txtTurno.Clear();
-            txtJogadorDaVez.Clear();
-            txtFaceDado.Clear();
-
-            txtTurno.Text = turno;
-            txtJogadorDaVez.Text = jogadoresDict[jogadorDaVez];
-            txtFaceDado.Text = facesDadoDict[faceDado];
-        }
-
-        private void btnVerificarTurno_Click(object sender, EventArgs e)
-        {
-            int idPartida = Convert.ToInt32(txtIdPartida.Text);
-            string retorno = Jogo.VerificarTurno(idPartida);
-            if (retorno.Substring(0, 4) == "ERRO")
-            {
-                MessageBox.Show("Ocorreu um erro:\n" + retorno.Substring(5), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                string jogador = Jogo.ListarJogadores(idPartida);
-                jogador = jogador.Replace("\r", "");
-                jogador = jogador.Substring(0, jogador.Length - 1);
-
-                // Criando o dicionário
-                Dictionary<int, string> jogadoresDict = new Dictionary<int, string>();
-
-                // Separar por linha
-                string[] linhas = jogador.Split('\n');
-
-                foreach (string linha in linhas)
-                {
-                    // Separar os campos
-                    string[] partes = linha.Split(',');
-
-                    int id = int.Parse(partes[0].Trim());
-                    string nome = partes[1].Trim();
-
-                    // Adicionar no dicionário
-                    jogadoresDict[id] = nome;
-                }
-
-                retorno = retorno.Replace("\r", "");
-                string[] retornos = retorno.Split(',');
-
-                int jogadorDaVez = Convert.ToInt32(retornos[1]);
-                string faceDado = retornos[2];
-                faceDado = faceDado.Substring(0, 2);
-                txtJogadorDaVez.Clear();
-                txtFaceDado.Clear();
-
-                txtJogadorDaVez.Text = jogadoresDict[jogadorDaVez];
-                txtFaceDado.Text = facesDadoDict[faceDado];
-
-            }
-        }
-
-
-        public string isEmpty()
-        {
-            //Fazer função para verificar se campo esta vazio, dict <string,list>
-            //Count da list, se == 0, retornar key
-            //IFs
-            if (p.tabuleiro["CD"].Count == 0)
-                return "CD";
-            else if (p.tabuleiro["FI"].Count == 0)
-                return "FI";
-            else if (p.tabuleiro["IS"].Count == 0)
-                return "IS";
-            else if (p.tabuleiro["MT"].Count == 0)
-                return "MT";
-            else if (p.tabuleiro["PA"].Count == 0)
-                return "PA";
-            else if (p.tabuleiro["RS"].Count == 0)
-                return "RS";
-            else
-                return "RI";
-        }
-
-        public string isRex()
-        {
-            //Fazer função para verificar se campo esta com t-Rex, dict <string,list>
-            //Se não tem retorna key
-            //IFs
-            if (!p.tabuleiro["CD"].Contains("Ti"))
-                return "CD";
-            else if (!p.tabuleiro["FI"].Contains("Ti"))
-                return "FI";
-            else if (!p.tabuleiro["IS"].Contains("Ti"))
-                return "IS";
-            else if (!p.tabuleiro["MT"].Contains("Ti"))
-                return "MT";
-            else if (!p.tabuleiro["PA"].Contains("Ti"))
-                return "PA";
-            else if (!p.tabuleiro["RS"].Contains("Ti"))
-                return "RS";
-            else
-                return "RI";
-        }
-
-        private void tmrVerificarPartida_Tick(object sender, EventArgs e)
-        {
-            bool jogar = false;
-            lblTestTimer.Text = "Tempo:" + DateTime.Now.ToString();
-            string anterior = "0";
-            Random rand = new Random();
-            tmrVerificarPartida.Enabled = false;
-            btnVerificarPartida_Click(sender, e);
-
-            if(anterior == txtTurno.Text)
-            {
-                jogar = true;
-                anterior = txtTurno.Text;
-            }
-
-            if(jogar)
-            {
-                if(txtFaceDado.Text == "Alimentação")
-                {
-                    int index = rand.Next(jogador.dinossauros.Count);
-                    string dinoEscolhido = jogador.dinossauros[index];
-
-                    jogador.dinossauros.RemoveAt(index);
-
-                    jogador.Jogar(dinoEscolhido, "FI");
-                    p.tabuleiro["FI"].Add(dinoEscolhido);
-                    jogar = false;
-                }
-                else if(txtFaceDado.Text == "Floresta")
-                {
-                    int index = rand.Next(jogador.dinossauros.Count);
-                    string dinoEscolhido = jogador.dinossauros[index];
-
-                    jogador.dinossauros.RemoveAt(index);
-
-                    jogador.Jogar(dinoEscolhido, "FI");
-                    p.tabuleiro["FI"].Add(dinoEscolhido);
-                    jogar = false;
-                }
-                else if(txtFaceDado.Text == "Pradaria")
-                {
-                    int index = rand.Next(jogador.dinossauros.Count);
-                    string dinoEscolhido = jogador.dinossauros[index];
-
-                    jogador.dinossauros.RemoveAt(index);
-
-                    jogador.Jogar(dinoEscolhido, "CD");
-                    p.tabuleiro["CD"].Add(dinoEscolhido);
-                    jogar = false;
-                }
-                else if(txtFaceDado.Text == "Tiranossauro Rex")
-                {
-                    int index = rand.Next(jogador.dinossauros.Count);
-                    string dinoEscolhido = jogador.dinossauros[index];
-
-                    jogador.dinossauros.RemoveAt(index);
-                    string semRex = isRex();
-
-                    jogador.Jogar(dinoEscolhido, semRex);
-                    p.tabuleiro[semRex].Add(dinoEscolhido);
-                    jogar = false;
-                }
-                else if( txtFaceDado.Text == "Cercado Vazio")
-                {
-                    int index = rand.Next(jogador.dinossauros.Count);
-                    string dinoEscolhido = jogador.dinossauros[index];
-
-                    jogador.dinossauros.RemoveAt(index);
-                    string semDino = isEmpty();
-
-                    jogador.Jogar(dinoEscolhido, semDino);
-                    p.tabuleiro[semDino].Add(dinoEscolhido);
-                    jogar = false;
-                }
-                else if(txtFaceDado.Text == "Banheiros")
-                {
-                    int index = rand.Next(jogador.dinossauros.Count);
-                    string dinoEscolhido = jogador.dinossauros[index];
-
-                    jogador.dinossauros.RemoveAt(index);
-
-                    jogador.Jogar(dinoEscolhido, "CD");
-                    p.tabuleiro["CD"].Add(dinoEscolhido);
-                    jogar = false;
-                }
-            }
-            btnExibirDino_Click(sender, e);
-            tmrVerificarPartida.Enabled = true;
         }
     }
 }
