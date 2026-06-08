@@ -16,6 +16,7 @@ namespace PI_3___2026
     {
         Partida p = new Partida();
         Jogador jogador;
+        Tabuleiro formTabuleiro;
 
         private string turnoAnterior = "-1";
 
@@ -255,6 +256,12 @@ namespace PI_3___2026
 
         private void btnIniciarAgente_Click(object sender, EventArgs e)
         {
+            if (formTabuleiro == null || formTabuleiro.IsDisposed)
+            {
+                formTabuleiro = new Tabuleiro();
+                formTabuleiro.Show();
+            }
+
             btnExibirDino_Click(sender, e);
             btnVerificarPartida_Click(sender, e);
             tmrVerificarPartida.Enabled = true;
@@ -340,8 +347,10 @@ namespace PI_3___2026
             switch (faceDado)
             {
                 case "Floresta":
-                case "Alimentação":
                     (dino, cercado) = EstrategiaRestricaoFloresta();
+                    break;
+                case "Alimentação":
+                    (dino, cercado) = EstrategiaRestricaoAlimentacao();
                     break;
                 case "Pradaria":
                     (dino, cercado) = EstrategiaRestricaoPradaria();
@@ -373,6 +382,10 @@ namespace PI_3___2026
                 {
                     if (p.tabuleiro.ContainsKey(cercado))
                         p.tabuleiro[cercado].Add(dino);
+
+                    if (formTabuleiro != null && !formTabuleiro.IsDisposed)
+                        formTabuleiro.AtualizarTabuleiro(p.tabuleiro);
+
                     jogador.dinossauros.Remove(dino);
                 }
                 else
@@ -385,13 +398,12 @@ namespace PI_3___2026
 
         private (string dino, string cercado) EstrategiaRestricaoFloresta()
             => EscolherMelhorJogadaEntre(new List<string> { "FI", "MT", "RS", "RI"});
-
+        private (string dino, string cercado) EstrategiaRestricaoAlimentacao()
+            => EscolherMelhorJogadaEntre(new List<string> { "FI", "MT", "PA", "RI" });
         private (string dino, string cercado) EstrategiaRestricaoPradaria()
             => EscolherMelhorJogadaEntre(new List<string> { "PA", "CD", "IS", "RI"});
-
         private (string dino, string cercado) EstrategiaRestricaoBanheiros()
             => EscolherMelhorJogadaEntre(new List<string> { "IS", "CD", "RS", "RI"});
-
         private (string dino, string cercado) EstrategiaRestricaoCercadoVazio()
         {
             var vazios = p.tabuleiro
@@ -403,7 +415,6 @@ namespace PI_3___2026
                 ? EscolherMelhorJogadaEntre(vazios)
                 : JogadaSegura();
         }
-
         private (string dino, string cercado) EstrategiaRestricaoSemRex()
         {
             var semRex = p.tabuleiro
