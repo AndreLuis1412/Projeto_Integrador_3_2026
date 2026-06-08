@@ -27,17 +27,15 @@ namespace PI_3___2026
             { "Tr", "Triceratops.png"    }
         };
 
-        // ─── Posições de cada cercado no tabuleiro ────────────────────────────
-        // Ajuste os X,Y até os dinos ficarem nos lugares certos
         private readonly Dictionary<string, Point> _posicaoCercado = new Dictionary<string, Point>
         {
-            { "FI", new Point(30,  80)  },
-            { "CD", new Point(470, 80)  },
-            { "PA", new Point(30,  380) },
-            { "MT", new Point(250, 380) },
-            { "RS", new Point(470, 380) },
-            { "IS", new Point(650, 380) },
-            { "RI", new Point(30,  650) },
+            { "FI", new Point(30,  80)   },
+            { "CD", new Point(520, 505)  },
+            { "PA", new Point(75,  775)  },
+            { "MT", new Point(50, 480)   },
+            { "RS", new Point(500, 70)   },
+            { "IS", new Point(410, 710)  },
+            { "RI", new Point(390,  800) },
         };
 
         // ─── Quantos dinos por linha em cada cercado ──────────────────────────
@@ -93,8 +91,6 @@ namespace PI_3___2026
             this.BackgroundImage = Image.FromFile(caminhoTabuleiro);
             this.BackgroundImageLayout = ImageLayout.Stretch;
         }
-
-        // ─── API pública: chamada pelo Form1 após cada jogada ─────────────────
 
         public void AtualizarTabuleiro(Dictionary<string, List<string>> tabuleiro)
         {
@@ -154,10 +150,6 @@ namespace PI_3___2026
             return bmp;
         }
 
-        /// <summary>
-        /// Remove o fundo da imagem em runtime usando a cor do pixel (0,0) como referência.
-        /// Tolerância de 30 para lidar com artefatos de compressão.
-        /// </summary>
         private Bitmap TornarFundoTransparente(Bitmap src)
         {
             Bitmap dest = new Bitmap(src.Width, src.Height, PixelFormat.Format32bppArgb);

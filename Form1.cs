@@ -259,7 +259,12 @@ namespace PI_3___2026
             if (formTabuleiro == null || formTabuleiro.IsDisposed)
             {
                 formTabuleiro = new Tabuleiro();
-                formTabuleiro.Show();
+                formTabuleiro.Show();                          
+                formTabuleiro.AtualizarTabuleiro(p.tabuleiro); 
+            }
+            else
+            {
+                formTabuleiro.AtualizarTabuleiro(p.tabuleiro); 
             }
 
             btnExibirDino_Click(sender, e);
@@ -397,13 +402,13 @@ namespace PI_3___2026
         }
 
         private (string dino, string cercado) EstrategiaRestricaoFloresta()
-            => EscolherMelhorJogadaEntre(new List<string> { "FI", "MT", "RS", "RI"});
+            => EscolherMelhorJogadaEntre(new List<string> { "FI", "MT", "RS"});
         private (string dino, string cercado) EstrategiaRestricaoAlimentacao()
-            => EscolherMelhorJogadaEntre(new List<string> { "FI", "MT", "PA", "RI" });
+            => EscolherMelhorJogadaEntre(new List<string> { "FI", "MT", "PA"});
         private (string dino, string cercado) EstrategiaRestricaoPradaria()
-            => EscolherMelhorJogadaEntre(new List<string> { "PA", "CD", "IS", "RI"});
+            => EscolherMelhorJogadaEntre(new List<string> { "PA", "CD", "IS"});
         private (string dino, string cercado) EstrategiaRestricaoBanheiros()
-            => EscolherMelhorJogadaEntre(new List<string> { "IS", "CD", "RS", "RI"});
+            => EscolherMelhorJogadaEntre(new List<string> { "IS", "CD", "RS"});
         private (string dino, string cercado) EstrategiaRestricaoCercadoVazio()
         {
             var vazios = p.tabuleiro

@@ -29,16 +29,5 @@ namespace PI_3___2026
 
             return false;
         }
-
-        public bool VerificarErroSilencioso(string verificacao)
-        {
-            if (string.IsNullOrEmpty(verificacao))
-                return true;
-
-            if (verificacao.Length >= 2 && verificacao.Substring(0, 2) == "ER")
-                return true;
-
-            return false;
-        }
     }
 }

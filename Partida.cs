@@ -68,7 +68,7 @@ namespace PI_3___2026
 
             string retorno = Jogo.ListarPartidas(status);
 
-            if (verificador.VerificarErroSilencioso(retorno))
+            if (verificador.VerificarErro(retorno))
                 return partidasObj;
 
             try
@@ -170,7 +170,7 @@ namespace PI_3___2026
         {
             string retorno = Jogo.VerificarPartida(this.Id);
 
-            if (verificador.VerificarErroSilencioso(retorno))
+            if (verificador.VerificarErro(retorno))
                 return null;
 
             try
